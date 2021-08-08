@@ -31,12 +31,13 @@ int main(int argc, const char *argv[]) {
     std::cout << "Reading Files..." << std::endl;
     for (index = 0; index < numSequences; ++index) {
         seqStringArray[index] = Load_Sequence((char *) argv[index + 1]);
-        SequenceRange item(previousSeqEnd,previousSeqEnd + seqStringArray[index]->length());
-        seqRangeArray[index] = std::make_shared<SequenceRange>(item);
-        previousSeqEnd += seqStringArray[index]->length() + 1; //Add +1 to include sentinel after each sequence
         if (seqStringArray[index] == nullptr){
             return EXIT_FAILURE;
         }
+        SequenceRange item(previousSeqEnd,previousSeqEnd + seqStringArray[index]->length());
+        seqRangeArray[index] = std::make_shared<SequenceRange>(item);
+        previousSeqEnd += seqStringArray[index]->length() + 1; //Add +1 to include sentinel after each sequence
+
     }
 
     //COMBINE SEQUENCES AND ADD SENTINELS
@@ -65,8 +66,7 @@ int main(int argc, const char *argv[]) {
 
     //Write to outfile
     std::cout << "Writing Results..." << std::endl; //Todo Consider using
-    if(!Write_Matches(*matchesMap,*similarityMetricVector,numSequences, "Results"
-                                                                        ".txt")){
+    if(!Write_Matches(*matchesMap,*similarityMetricVector,numSequences, "Results_SUB.txt")){
         return EXIT_FAILURE;
     }
 

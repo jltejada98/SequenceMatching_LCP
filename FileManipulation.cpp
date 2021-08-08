@@ -17,11 +17,11 @@ std::shared_ptr<std::string> Load_Sequence(const char *filename){
         File.close();
     }
     catch (const std::ifstream::failure &e){
-        std::cerr << "Exception" << e.what() << e.code() <<"opening/reading/closing file" <<std::endl;
+        std::cerr << "Exception" << e.what() << e.code() <<" opening/reading/closing file." <<std::endl;
         return nullptr;
     }
     catch (const std::exception &e) {
-        std::cerr << "Exception" << e.what() <<std::endl;
+        std::cerr << "Exception." << e.what() <<std::endl;
         return nullptr;
     }
 
