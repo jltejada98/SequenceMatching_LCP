@@ -11,20 +11,20 @@ CMakeFiles/SequenceMatching_LCP.dir/FileManipulation.cpp.o
 CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.cpp
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h
+CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.o
+ /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/PossibleMatches.cpp
+ /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/PossibleMatches.h
 CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h
+ /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/PossibleMatches.h
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.cpp
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.h
- /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceRange.h
-CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.o
- /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceRange.cpp
- /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceRange.h
 CMakeFiles/SequenceMatching_LCP.dir/main.cpp.o
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/FileManipulation.h
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/LCPArrayKasai.hpp
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h
+ /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/PossibleMatches.h
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/Sais.h
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.h
- /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceRange.h
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SuffixArray.hpp
  /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/main.cpp

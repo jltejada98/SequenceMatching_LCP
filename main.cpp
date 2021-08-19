@@ -1,5 +1,4 @@
 #include "FileManipulation.h"
-#include "SequenceRange.h"
 #include "MatchLocations.h"
 #include "SequenceMatching.h"
 #include "SuffixArray.hpp"
@@ -25,48 +24,51 @@ int main(int argc, const char *argv[]) {
     //READ SEQUENCES
     size_t index;
     size_t minimumMatchSize = (std::stoi(argv[argc-1]));
-    size_t previousSeqEnd=0;
-    std::shared_ptr<std::string> seqStringArray[numSequences];
-    std::shared_ptr<SequenceRange> seqRangeArray[numSequences];
+    size_t lengthSum = 0;
+    std::vector<std::shared_ptr<std::string>> seqStringVector;
+    std::vector<size_t> seqRangeVector;
     std::cout << "Reading Files..." << std::endl;
     for (index = 0; index < numSequences; ++index) {
-        seqStringArray[index] = Load_Sequence((char *) argv[index + 1]);
-        if (seqStringArray[index] == nullptr){
+        seqStringVector.push_back(Load_Sequence((char *) argv[index + 1]));
+        if (seqStringVector[index] == nullptr){
             return EXIT_FAILURE;
         }
-        SequenceRange item(previousSeqEnd,previousSeqEnd + seqStringArray[index]->length());
-        seqRangeArray[index] = std::make_shared<SequenceRange>(item);
-        previousSeqEnd += seqStringArray[index]->length() + 1; //Add +1 to include sentinel after each sequence
-
+        seqRangeVector.push_back(lengthSum + seqStringVector[index]->length());
+        lengthSum = seqStringVector[index]->length() + 1; //Add for sentinel
     }
 
     //COMBINE SEQUENCES AND ADD SENTINELS
-    std::shared_ptr<std::string> seqStringCombined = Combine_Sequences(seqStringArray, numSequences);
+    std::shared_ptr<std::string> seqStringCombined = Combine_Sequences(seqStringVector, numSequences);
 
     //CREATE SUFFIX ARRAY AND LCP ARRAYS
     std::cout << "Determining Suffix/LCP arrays..." << std::endl;
-    SuffixArray<int> seqSuffixArray(*seqStringCombined);
-    std::vector<int> SAvector = seqSuffixArray.GetSuffixArray();
-    LCPArrayKasai<int> seqLCPArray(SAvector, *seqStringCombined);
-    std::vector<int>LCPVector = seqLCPArray.GetLCPArray();
+    SuffixArray<int> seqSuffixArray(*seqStringCombined); //Todo modify Sais.c to use size_t
+    std::vector<int> SAVector = seqSuffixArray.GetSuffixArray();
+    LCPArrayKasai<int> seqLCPArray(SAVector, *seqStringCombined);
+    std::vector<int> LCPVector = seqLCPArray.GetLCPArray();
+
+    //Todo consider subtracting lengths of previous sequence and sentinel so that suffix array indecies are well positioned.
+
+    //CREATE SUFFIX ARRAY INDEX TO SEQUENCE MAPPING
+    std::shared_ptr<std::vector<size_t>> indexVector = Determine_Index_Mapping(SAVector, seqRangeVector);
+
+    for(int i = 0; i < SAVector.size(); ++i){
+        std::cout << i <<  " " << LCPVector.at(i) <<  " " << SAVector.at(i)  << " " << seqStringCombined->substr(SAVector.at(i), 10) << std::endl;
+    }
 
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;
-    std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Matches(LCPVector, SAvector, seqRangeArray, seqStringArray, minimumMatchSize, numSequences);
-
-    //DETERMINE SUBMATCHING
-    std::cout << "Determining Sub-Matches..." << std::endl;
-    Determine_Submatching(*matchesMap, minimumMatchSize, numSequences);
+    std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Matches(LCPVector, SAVector, *indexVector, seqStringVector, minimumMatchSize, numSequences);
 
 
     //DETERMINE SIMILARITY METRICS
     std::cout << "Determining Similarity Metrics..." << std::endl;
-    std::shared_ptr<std::vector<double>> similarityMetricVector = Determine_SimilarityMetrics(*matchesMap, *seqStringCombined, seqStringArray, numSequences);
+    std::shared_ptr<std::vector<double>> similarityMetricVector = Determine_SimilarityMetrics(*matchesMap, *seqStringCombined, seqStringVector, numSequences);
 
 
     //Write to outfile
-    std::cout << "Writing Results..." << std::endl; //Todo Consider using
-    if(!Write_Matches(*matchesMap,*similarityMetricVector,numSequences, "Results_SUB.txt")){
+    std::cout << "Writing Results..." << std::endl;
+    if(!Write_Matches(*matchesMap,*similarityMetricVector,numSequences, "Results.txt")){
         return EXIT_FAILURE;
     }
 

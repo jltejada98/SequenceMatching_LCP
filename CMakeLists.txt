@@ -7,7 +7,5 @@ add_executable(SequenceMatching_LCP main.cpp
         Sais.c
         FileManipulation.cpp
         FileManipulation.h
-        SequenceRange.cpp
-        SequenceRange.h
         MatchLocations.cpp
-        MatchLocations.h SequenceMatching.cpp SequenceMatching.h)
+        MatchLocations.h SequenceMatching.cpp SequenceMatching.h PossibleMatches.cpp PossibleMatches.h)

@@ -92,6 +92,12 @@
 		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h">
 			<Option target="SequenceMatching_LCP"/>
 		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/PossibleMatches.cpp">
+			<Option target="SequenceMatching_LCP"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/PossibleMatches.h">
+			<Option target="SequenceMatching_LCP"/>
+		</Unit>
 		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/Sais.c">
 			<Option target="SequenceMatching_LCP"/>
 		</Unit>
@@ -102,12 +108,6 @@
 			<Option target="SequenceMatching_LCP"/>
 		</Unit>
 		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.h">
-			<Option target="SequenceMatching_LCP"/>
-		</Unit>
-		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceRange.cpp">
-			<Option target="SequenceMatching_LCP"/>
-		</Unit>
-		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceRange.h">
 			<Option target="SequenceMatching_LCP"/>
 		</Unit>
 		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/main.cpp">

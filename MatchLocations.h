@@ -5,18 +5,17 @@
 #ifndef SEQUENCEMATCHING_LCP_MATCHLOCATIONS_H
 #define SEQUENCEMATCHING_LCP_MATCHLOCATIONS_H
 
-#include <string>
-#include <vector>
 #include <unordered_set>
+#include <vector>
 
 class MatchLocations {
 private:
-    std::vector<std::shared_ptr<std::unordered_set<size_t>>> matchVector;
+    std::shared_ptr<std::vector<std::unordered_set<size_t>>> matchVector;
 public:
     MatchLocations();
-    void insertSet(std::shared_ptr<std::unordered_set<size_t>> indexSet);
-    void insertIndex(size_t setIndex, size_t index);
-    std::shared_ptr<std::vector<std::shared_ptr<std::unordered_set<size_t>>>> getMatchVector();
+    void insertMatchVector(std::shared_ptr<std::vector<std::unordered_set<size_t>>> vector);
+    void addMatches(std::shared_ptr<std::vector<std::unordered_set<size_t>>> vector);
+    std::shared_ptr<std::vector<std::unordered_set<size_t>>> getMatchVector();
 };
 
 

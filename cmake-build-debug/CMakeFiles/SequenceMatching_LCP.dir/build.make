@@ -105,22 +105,9 @@ CMakeFiles/SequenceMatching_LCP.dir/FileManipulation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SequenceMatching_LCP.dir/FileManipulation.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/FileManipulation.cpp -o CMakeFiles/SequenceMatching_LCP.dir/FileManipulation.cpp.s
 
-CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.o: CMakeFiles/SequenceMatching_LCP.dir/flags.make
-CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.o: ../SequenceRange.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.o -c /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceRange.cpp
-
-CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceRange.cpp > CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.i
-
-CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceRange.cpp -o CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.s
-
 CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o: CMakeFiles/SequenceMatching_LCP.dir/flags.make
 CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o: ../MatchLocations.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o -c /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.cpp
 
 CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.i: cmake_force
@@ -133,7 +120,7 @@ CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.s: cmake_force
 
 CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o: CMakeFiles/SequenceMatching_LCP.dir/flags.make
 CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o: ../SequenceMatching.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o -c /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.cpp
 
 CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.i: cmake_force
@@ -144,14 +131,27 @@ CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.s"
 	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.cpp -o CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.s
 
+CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.o: CMakeFiles/SequenceMatching_LCP.dir/flags.make
+CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.o: ../PossibleMatches.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.o -c /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/PossibleMatches.cpp
+
+CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/PossibleMatches.cpp > CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.i
+
+CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/PossibleMatches.cpp -o CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.s
+
 # Object files for target SequenceMatching_LCP
 SequenceMatching_LCP_OBJECTS = \
 "CMakeFiles/SequenceMatching_LCP.dir/main.cpp.o" \
 "CMakeFiles/SequenceMatching_LCP.dir/Sais.c.o" \
 "CMakeFiles/SequenceMatching_LCP.dir/FileManipulation.cpp.o" \
-"CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.o" \
 "CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o" \
-"CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o"
+"CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o" \
+"CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.o"
 
 # External object files for target SequenceMatching_LCP
 SequenceMatching_LCP_EXTERNAL_OBJECTS =
@@ -159,9 +159,9 @@ SequenceMatching_LCP_EXTERNAL_OBJECTS =
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/main.cpp.o
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/Sais.c.o
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/FileManipulation.cpp.o
-SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.o
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o
+SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.o
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/build.make
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable SequenceMatching_LCP"

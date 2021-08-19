@@ -4,105 +4,147 @@
 
 #include "SequenceMatching.h"
 
+std::shared_ptr<std::vector<size_t>> Determine_Index_Mapping(std::vector<int> &SAvector, std::vector<size_t> &seqRangeArray){
+    //Determines mapping between SA index and sequence it belongs to.
+    size_t SAIndex;
+//    size_t SAShift;
+    size_t rangeIndex;
+    std::vector<size_t> indexVector;
+
+    for(SAIndex = 0; SAIndex < SAvector.size(); ++SAIndex) {
+        rangeIndex = 0;
+        //Dont need to check boundaries since index guaranteed to be less than last item.
+        while(SAvector[SAIndex] > seqRangeArray[rangeIndex]){  //Equality added for sentinels
+            ++rangeIndex;
+        }
+        indexVector.push_back(rangeIndex);
+        //Shift suffix array back to original sequence positions
+//        SAShift = rangeIndex > 0 ? seqRangeArray[rangeIndex] : 0;
+//        SAvector[SAIndex] -= SAShift;
+    }
+
+    return std::make_shared<std::vector<size_t>>(indexVector);
+}
+
 
 std::shared_ptr<std::unordered_map<std::string, MatchLocations>>
-Determine_Matches(std::vector<int> &LCPVector,std::vector<int> &SAvector, std::shared_ptr<SequenceRange> *seqRangeArray,
-                  std::shared_ptr<std::string> *seqStringArray,size_t &minimumMatchSize, size_t &numSequences){
+Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector,
+                  std::vector<size_t> &indexVector, std::vector<std::shared_ptr<std::string>> &seqStringVector, size_t &minimumMatchSize,
+                  size_t &numSequences){
     size_t LCPVectorSize = LCPVector.size();
-    size_t windowIndex;
-    size_t index = 1; //LCP[0] == 0 (Always)
-    size_t seqRangeIndex;
+    size_t index = numSequences; //Guaranteed for LCP[0..numSequences] == 0 due to sentinel higher lexographical order.
     size_t matchLength;
     size_t matchIndexForString;
     std::unordered_map<std::string, MatchLocations> matchesMap;
-    std::shared_ptr<std::unordered_set<size_t>> matchSet;
+    std::shared_ptr<std::vector<std::unordered_set<size_t>>> matchVector;
     std::shared_ptr<std::string> newMatchString;
     std::shared_ptr<MatchLocations> newMatchLocation;
     std::pair<std::string,MatchLocations> newMatchPair;
-    std::shared_ptr<std::vector<std::shared_ptr<std::unordered_set<size_t>>>> existingMatchVector;
-    std::shared_ptr<std::unordered_set<size_t>> transferredSet;
 
-    //Todo (Consider doing with threads) Split LCP index into n parts and process in parallel (See Previous Implementation)
-    // (Would need locks to ensure only 1 thread write to map at a time.)
+
+    //Todo Consider using ordered map for adding substring indices across all runMaps in vector.
+    std::vector<std::shared_ptr<std::map<size_t, PossibleMatches>>> runMapVector;
+    std::shared_ptr<std::map<size_t, PossibleMatches>> runMap;
+    std::pair<size_t, PossibleMatches> runPair;
+    std::shared_ptr<PossibleMatches> runLocation;
+    std::shared_ptr<int> runLength;
+
+    //New Algorithhm
+    // Determine Run (Qualified by all LCP values >= minLength)
+        // Within Run, determine strictly increasing run
+        // Add matches to runMap and check for existance based on LCP value (key in map)
+    //After determining all strictly increasing runs, add submatching by adding indecies to all matches with ength >= current length
+    //Continue adding matches based on runMap.
+
+
+
     while(index < LCPVectorSize){
-        if (LCPVector[index] >= minimumMatchSize){
-            windowIndex = index + 1;
-            //Determine number of possible matches
-            while(LCPVector[windowIndex] >= LCPVector[index]){ //LCP values must be equal for match to be the same (Adjacent)
-                ++windowIndex;
+        if (LCPVector.at(index) >= minimumMatchSize){
+            //Todo Consider using threads to find next run?
+            //Determine runs and possible matches
+            while((index  < LCPVectorSize) && (LCPVector.at(index) >= minimumMatchSize)){ //Determine end of run
+                //Create new runMap
+                runMap = std::make_shared<std::map<size_t, PossibleMatches>>();
+                runLocation = std::make_shared<PossibleMatches>();
+                //SA comparisons start at n-1. (LCP[index] -> comparing SA[index-1] and SA[index])
+                runLocation->InsertMatch(SAVector.at(index - 1), indexVector.at(index - 1));
+                runLocation->InsertMatch(SAVector.at(index), indexVector.at(index));
+                runPair = std::make_pair(LCPVector.at(index), *runLocation);
+                runMap->insert(runPair);
+                //Due to SA[index-1] being included in previous strictly increasing run, we must include it in the previous runMap to perform submatching
+                if(!runMapVector.empty()){
+                    runMapVector.back()->insert(runPair);
+                }
+                ++index;
+
+                while((index < LCPVectorSize) && (LCPVector.at(index) >= LCPVector.at(index - 1))){ //Determine end of strictly increasing run
+                    if(runMap->count(LCPVector.at(index))){ //If matchLength exists
+                        runMap->at(LCPVector.at(index)).InsertMatch(SAVector.at(index), indexVector.at(index));
+                    }
+                    else{ //Create new possible match
+                        runLocation = std::make_shared<PossibleMatches>();
+                        //LCP[index] -> comparing SA[index-1] and SA[index]
+                        runLocation->InsertMatch(SAVector.at(index - 1), indexVector.at(index - 1));
+                        runLocation->InsertMatch(SAVector.at(index), indexVector.at(index));
+                        runPair = std::make_pair(LCPVector.at(index), *runLocation);
+                        runMap->insert(runPair);
+                    }
+                    ++index;
+                }
+                runMapVector.push_back(runMap);
             }
 
-            //Determine if enough possible matches were found.
-            if ((windowIndex - index) >= numSequences){
-                //Create Index Sets
-                if(!seqRangeArray[0]->checkSetAllocation()){ //Check if Index Sets are allocated
-                    for (seqRangeIndex = 0; seqRangeIndex < numSequences ; ++seqRangeIndex) {
-                        matchSet = std::make_shared<std::unordered_set<size_t>>();
-                        seqRangeArray[seqRangeIndex]->insertSet(matchSet);
-                    }
-                }
-
-                //Determine if the read indices include matches from all strings.
-                for (size_t saIndex = (index - 1); saIndex < windowIndex; ++saIndex) { //Start at index-1 Since LCP Compares Adjacent Values
-                    seqRangeIndex = 0;
-                    while(!seqRangeArray[seqRangeIndex]->checkInsertIndex(SAvector[saIndex]) ){ //Not necesary to check index length (Guaranteed to exist)
-                        ++seqRangeIndex;
-                    }
-                }
-
-                //Check if all seqRangeArrays are true
-                seqRangeIndex = 0;
-                while((seqRangeArray[seqRangeIndex]->getCheck()) && (seqRangeIndex < numSequences)){
-                    ++seqRangeIndex;
-                }
-
-                if (seqRangeIndex < numSequences){ //Match is not included in all sequences.
-                    //Reset range checks and clear sets
-                    for (seqRangeIndex = 0;  seqRangeIndex < numSequences ; ++seqRangeIndex) {
-                        seqRangeArray[seqRangeIndex]->reset();
-                    }
-                }
-                else{//Add Matches and Locations to Matches Map.
-                    //Obtain element index from first sequence index.
-                    matchLength = LCPVector[index];
-                    matchIndexForString = *seqRangeArray[0]->getSet()->begin();
-                    newMatchString = std::make_shared<std::string>(std::string(seqStringArray[0]->substr(matchIndexForString, matchLength)));
-
-                    if(matchesMap.count(*newMatchString)){ //Check if match already exists
-                        existingMatchVector = matchesMap.at(*newMatchString).getMatchVector();
-                        for (seqRangeIndex = 0; seqRangeIndex < numSequences; ++seqRangeIndex) {
-                            transferredSet = seqRangeArray[seqRangeIndex]->transferSet();
-                            existingMatchVector->at(seqRangeIndex)->insert(transferredSet->begin(), transferredSet->end());
-                        }
-                    }
-                    else{ //Insert new match
-                        newMatchLocation = std::make_shared<MatchLocations>();
-                        //Transfer set pointers
-                        for (seqRangeIndex = 0;  seqRangeIndex < numSequences ; ++seqRangeIndex) {
-                            newMatchLocation->insertSet(seqRangeArray[seqRangeIndex]->transferSet()); //Transferring sets resets range checks.
-                        }
-                        newMatchPair = std::make_pair(*newMatchString, *newMatchLocation);
-                        matchesMap.insert(newMatchPair);
-                    }
+            // Todo Consider using threads to determine submatching
+            //Determine submatching amongst strictly increasing runs.
+            for(auto &map: runMapVector){ //In each strictly increasing map, we can perform submatching for all of the strings
+                auto currMapItem = map->begin();
+                auto currMapEnd = map->end();
+                while(currMapItem != currMapEnd){
+                      auto nextMapItem = std::next(currMapItem);
+                      while(nextMapItem != currMapEnd){
+                          //Add Matches from the current map Item to the next one:
+                          //Map is sorted and it is guaranteed that in a strictly increasing run, it includes the match.
+                          currMapItem->second.AddSubMatch(nextMapItem->second.getSA(),nextMapItem->second.getSeq());
+//                          nextMapItem->second.AddSubMatch(currMapItem->second.getSA(), currMapItem->second.getSeq());
+                          ++nextMapItem;
+                      }
+                      ++currMapItem;
                 }
             }
-            else{ //Reset range checks and clear sets
-                for (seqRangeIndex = 0;  seqRangeIndex < numSequences ; ++seqRangeIndex) {
-                    seqRangeArray[seqRangeIndex]->reset();
-                }
-            }
+
+            std::cout << "Complete" << std::endl;
+
+            //Determine if each of the possible match lengths has indices from all sequences
+//            for (auto &run: runMap) {
+//                if(run.second.UniqueSetIndices() >= numSequences){ //Indices from all sequences
+//                    //Insert match onto matchesMap
+//                    matchLength = run.first;
+//                    matchVector = run.second.TransferMatches();
+//                    matchIndexForString = *(matchVector->at(0).begin());
+//                    newMatchString = std::make_shared<std::string>(seqStringVector.at(0)->substr(matchIndexForString, matchLength));
+//                    //No need to check if match exists since lexicographical ordering of LCP array guarantees this
+//                    newMatchLocation = std::make_shared<MatchLocations>();
+//                    newMatchLocation->insertMatchVector(matchVector);
+//                    newMatchPair = std::make_pair(*newMatchString, *newMatchLocation);
+//                    matchesMap.insert(newMatchPair);
+//                }
+//            }
+//            //Perform setup for next run
+//            runMap.clear();
         }
-
-        ++index;
+        else{
+            ++index;
+        }
     }
+
 
     return std::make_shared<std::unordered_map<std::string, MatchLocations>>(matchesMap);
 }
 
 
 std::shared_ptr<std::vector<double>>
-Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &matchesMap,std::string &seqStringCombined,
-                            std::shared_ptr<std::string> *seqStringArray,
+Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &matchesMap, std::string &seqStringCombined,
+                            std::vector<std::shared_ptr<std::string>> &seqStringArray,
                             size_t &numSequences){
     size_t index;
     size_t seqIndex;
@@ -110,16 +152,16 @@ Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &mat
     size_t overallCoverageSize = 0;
     std::vector<double> similarityMetricVector;
     std::vector<std::unordered_set<size_t>> seqVectorSet;
-    std::vector<std::shared_ptr<std::unordered_set<size_t>>> matchIndeciesVector;
+    std::vector<std::unordered_set<size_t>> matchIndicesVector;
     for (seqIndex = 0; seqIndex < numSequences; ++seqIndex) {
         seqVectorSet.emplace_back(std::unordered_set<size_t>());
     }
     for (auto &match: matchesMap){
-        matchIndeciesVector = *match.second.getMatchVector();
+        matchIndicesVector = *match.second.getMatchVector();
         matchLength = match.first.length();
         for (seqIndex = 0; seqIndex < numSequences ; ++seqIndex) {
             //For each index in each sequence set.
-            for (auto &seqSetIndex : *matchIndeciesVector[seqIndex]){
+            for (auto &seqSetIndex : matchIndicesVector[seqIndex]){
                 for (index = seqSetIndex; index < (seqSetIndex+matchLength); ++index){
                     seqVectorSet[seqIndex].insert(index);
                 }
@@ -133,78 +175,4 @@ Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &mat
     similarityMetricVector.emplace_back((double) overallCoverageSize /(double)(seqStringCombined.length() - numSequences));
 
     return std::make_shared<std::vector<double>>(similarityMetricVector);
-}
-
-
-void Determine_Submatching(std::unordered_map<std::string, MatchLocations> &matchesMap, size_t &minimumMatchSize,
-                           size_t &numSequences){
-    //Todo (Consider doing with threads) Split MatchMap into n parts and process in parallel
-    std::string matchString;
-    MatchLocations matchLocations;
-    size_t matchLength;
-    size_t numPartitions;
-
-    for(auto &matchToCheck: matchesMap){
-
-        if(matchToCheck.first.length() > minimumMatchSize){ //Submatching condition
-            matchString = matchToCheck.first;
-            matchLocations = matchToCheck.second;
-            matchLength = matchString.length();
-            auto matchVector = *matchLocations.getMatchVector();
-            numPartitions = ((matchLength - minimumMatchSize) * (matchLength - minimumMatchSize + 3)) / 2; //Closed form for number of partitions
-
-
-            if (numPartitions <= matchesMap.size()){ //Partion match into all possible substrings and check if exists in map.
-                //Determine partitions
-                size_t partitionShift;
-                std::vector<std::shared_ptr<std::string>> partitionsStringList;
-                std::vector<std::shared_ptr<size_t>> partitionsShiftList;
-                for(size_t p = matchLength - 1; p >= minimumMatchSize; --p){
-                    for (size_t i = 0; (i+p) <= matchLength ; ++i){
-                        partitionsShiftList.push_back(std::make_shared<size_t>(i));
-                        partitionsStringList.push_back(std::make_shared<std::string>(std::string(matchString.substr(i, p))));
-                    }
-                }
-                //Check if partions exist in map, if so add indecies of matchLocations into submatch
-                for (size_t partitionIndex = 0; partitionIndex < partitionsShiftList.size(); ++partitionIndex) {
-                    if(matchesMap.count(*partitionsStringList.at(partitionIndex)) >= 1){
-                        partitionShift = *partitionsShiftList.at(partitionIndex);
-                        for (size_t setIndex = 0; setIndex < numSequences; ++setIndex) {
-                            for(auto &index: *matchVector.at(setIndex)){
-                                matchesMap.at(*partitionsStringList.at(partitionIndex)).insertIndex(setIndex, index+partitionShift);
-                            }
-                        }
-                    }
-                }
-
-            }
-            else{ //Check all elements in hashtable against the keyToCheck.
-                size_t foundAtIndex;
-                std::regex regexKey;
-                std::sregex_iterator foundIterator;
-                auto end = std::sregex_iterator();
-
-                for(auto &key: matchesMap){ //Iterate all keys
-                    if ((key.first != matchString) && (matchString.length() > key.first.length()) && (matchString.find(key.first) != std::string::npos)){ //Determines if key is contained in matchString
-                        regexKey = std::regex(std::string(key.first));
-                        foundIterator = std::sregex_iterator(matchString.begin(), matchString.end(), regexKey);
-                        for(std::sregex_iterator i = foundIterator; i != end; i++){ //For each instance of substring found.
-                            std::smatch subtringMatch = *i;
-                            foundAtIndex = i->position();
-                            for (size_t setIndex = 0; setIndex < numSequences; ++setIndex) {
-                                for(auto &index: *matchVector.at(setIndex)){
-                                    matchesMap.at(matchString).insertIndex(foundAtIndex, index+foundAtIndex);
-                                }
-                            }
-                        }
-                    }
-                }
-
-            }
-
-        }
-    }
-
-
-
 }

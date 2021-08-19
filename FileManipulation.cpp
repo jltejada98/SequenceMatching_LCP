@@ -28,8 +28,7 @@ std::shared_ptr<std::string> Load_Sequence(const char *filename){
     return std::make_shared<std::string>(sequenceString);
 }
 
-
-std::shared_ptr<std::string> Combine_Sequences(const std::shared_ptr<std::string> *seqStringArray, size_t numSequences) {
+std::shared_ptr<std::string> Combine_Sequences(const std::vector<std::shared_ptr<std::string>> &seqStringArray, size_t numSequences) {
     char sentinel = '!'; //Sentinel not included in language dictionary.
     size_t index;
     std::string combinedString;
@@ -47,7 +46,7 @@ bool Write_Matches(std::unordered_map<std::string, MatchLocations> &matchesMap,s
                    size_t &numSequences, const std::string &outFilename){
     std::ofstream File;
     File.exceptions(~::std::ios_base::goodbit);
-    std::vector<std::shared_ptr<std::unordered_set<size_t>>> matchIndeciesVector;
+    std::vector<std::unordered_set<size_t>> matchIndicesVector;
 
     try{
         File.open(outFilename); //Open for writing
@@ -62,9 +61,9 @@ bool Write_Matches(std::unordered_map<std::string, MatchLocations> &matchesMap,s
         //Write Matches
         for (auto &key : matchesMap){
             File << key.first << std::endl;
-            matchIndeciesVector = *key.second.getMatchVector();
-            for (auto &seqSet: matchIndeciesVector){
-                for (auto &seqIndex : *seqSet){
+            matchIndicesVector = *key.second.getMatchVector();
+            for (auto &seqSet: matchIndicesVector){
+                for (auto &seqIndex : seqSet){
                     File << seqIndex << ",";
                 }
                 File << std::endl;

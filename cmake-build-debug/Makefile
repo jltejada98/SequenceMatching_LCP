@@ -177,6 +177,30 @@ MatchLocations.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.s
 .PHONY : MatchLocations.cpp.s
 
+PossibleMatches.o: PossibleMatches.cpp.o
+.PHONY : PossibleMatches.o
+
+# target to build an object file
+PossibleMatches.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.o
+.PHONY : PossibleMatches.cpp.o
+
+PossibleMatches.i: PossibleMatches.cpp.i
+.PHONY : PossibleMatches.i
+
+# target to preprocess a source file
+PossibleMatches.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.i
+.PHONY : PossibleMatches.cpp.i
+
+PossibleMatches.s: PossibleMatches.cpp.s
+.PHONY : PossibleMatches.s
+
+# target to generate assembly for a file
+PossibleMatches.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.s
+.PHONY : PossibleMatches.cpp.s
+
 Sais.o: Sais.c.o
 .PHONY : Sais.o
 
@@ -225,30 +249,6 @@ SequenceMatching.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.s
 .PHONY : SequenceMatching.cpp.s
 
-SequenceRange.o: SequenceRange.cpp.o
-.PHONY : SequenceRange.o
-
-# target to build an object file
-SequenceRange.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.o
-.PHONY : SequenceRange.cpp.o
-
-SequenceRange.i: SequenceRange.cpp.i
-.PHONY : SequenceRange.i
-
-# target to preprocess a source file
-SequenceRange.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.i
-.PHONY : SequenceRange.cpp.i
-
-SequenceRange.s: SequenceRange.cpp.s
-.PHONY : SequenceRange.s
-
-# target to generate assembly for a file
-SequenceRange.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/SequenceRange.cpp.s
-.PHONY : SequenceRange.cpp.s
-
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -288,15 +288,15 @@ help:
 	@echo "... MatchLocations.o"
 	@echo "... MatchLocations.i"
 	@echo "... MatchLocations.s"
+	@echo "... PossibleMatches.o"
+	@echo "... PossibleMatches.i"
+	@echo "... PossibleMatches.s"
 	@echo "... Sais.o"
 	@echo "... Sais.i"
 	@echo "... Sais.s"
 	@echo "... SequenceMatching.o"
 	@echo "... SequenceMatching.i"
 	@echo "... SequenceMatching.s"
-	@echo "... SequenceRange.o"
-	@echo "... SequenceRange.i"
-	@echo "... SequenceRange.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

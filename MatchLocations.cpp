@@ -5,19 +5,22 @@
 #include "MatchLocations.h"
 
 MatchLocations::MatchLocations() {
+    matchVector = nullptr;
+}
+
+void MatchLocations::insertMatchVector(std::shared_ptr<std::vector<std::unordered_set<size_t>>> vector) {
+    matchVector = vector;
+}
+
+void MatchLocations::addMatches(std::shared_ptr<std::vector<std::unordered_set<size_t>>> vector) {
+    size_t vectorSize = vector->size();
+    for (int seqInd = 0; seqInd < vectorSize; ++seqInd) { //Insert all matches from set into corresponding vector.
+        matchVector->at(seqInd).insert(vector->at(seqInd).begin(), vector->at(seqInd).end());
+    }
 
 }
 
-//Assumes insertion in sequence order
-void MatchLocations::insertSet(std::shared_ptr<std::unordered_set<size_t>> indexSet) {
-    matchVector.push_back(indexSet);
-}
-
-std::shared_ptr<std::vector<std::shared_ptr<std::unordered_set<size_t>>>> MatchLocations::getMatchVector() {
-    return std::make_shared<std::vector<std::shared_ptr<std::unordered_set<size_t>>>>(matchVector);
-}
-
-void MatchLocations::insertIndex(size_t setIndex, size_t index) {
-    matchVector.at(setIndex)->insert(index);
+std::shared_ptr<std::vector<std::unordered_set<size_t>>> MatchLocations::getMatchVector() {
+    return matchVector;
 }
 

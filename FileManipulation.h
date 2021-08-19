@@ -12,7 +12,7 @@
 #include "MatchLocations.h"
 
 std::shared_ptr<std::string> Load_Sequence(const char *filename);
-std::shared_ptr<std::string> Combine_Sequences(const std::shared_ptr<std::string> *seqStringArray, size_t numSequences);
+std::shared_ptr<std::string> Combine_Sequences(const std::vector<std::shared_ptr<std::string>> &seqStringArray, size_t numSequences);
 bool Write_Matches(std::unordered_map<std::string, MatchLocations> &matchesMap,std::vector<double> &similarityMetrics,
                    size_t &numSequences, const std::string& outFilename);
 
