@@ -52,10 +52,6 @@ int main(int argc, const char *argv[]) {
     //CREATE SUFFIX ARRAY INDEX TO SEQUENCE MAPPING
     std::shared_ptr<std::vector<size_t>> indexVector = Determine_Index_Mapping(SAVector, seqRangeVector);
 
-    for(int i = 0; i < SAVector.size(); ++i){
-        std::cout << i <<  " " << LCPVector.at(i) <<  " " << SAVector.at(i)  << " " << seqStringCombined->substr(SAVector.at(i), 10) << std::endl;
-    }
-
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;
     std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Matches(LCPVector, SAVector, *indexVector, seqStringVector, minimumMatchSize, numSequences);
@@ -68,7 +64,7 @@ int main(int argc, const char *argv[]) {
 
     //Write to outfile
     std::cout << "Writing Results..." << std::endl;
-    if(!Write_Matches(*matchesMap,*similarityMetricVector,numSequences, "Results.txt")){
+    if(!Write_Matches(*matchesMap,*similarityMetricVector,numSequences, "Results_LCP.txt")){
         return EXIT_FAILURE;
     }
 

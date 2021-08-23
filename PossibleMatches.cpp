@@ -9,20 +9,16 @@ PossibleMatches::PossibleMatches() {
 }
 
 void PossibleMatches::InsertMatch(int &SAIndex, size_t &seqIndex) {
-    //Todo consider using a mapping from SAIndex to SeqIndex (Consider slow iteration when transfering sets)
-    SAIndices.push_back(SAIndex);
-    seqIndices.push_back(seqIndex);
-    uniqueSAIndices.insert(SAIndex); //Used for fast lookup when submatching
-    uniqueSeqIndices.insert(seqIndex); //Only keeps unique seqIndices
+    SAIndexMap.insert(std::make_pair(SAIndex, seqIndex));
+    uniqueSeqIndices.insert(seqIndex); //Only keeps unique seqIndices.
 }
 
 size_t PossibleMatches::UniqueSetIndices() {
     return uniqueSeqIndices.size();
 }
 
-std::shared_ptr<std::vector<std::unordered_set<size_t>>> PossibleMatches::MatchesForMap() {
+std::shared_ptr<std::vector<std::unordered_set<size_t>>> PossibleMatches::TransferMatches() {
     size_t index;
-    size_t SASize = SAIndices.size();
     std::vector<std::unordered_set<size_t>> matchIndexVector;
     std::shared_ptr<std::unordered_set<size_t>> unorderedSet;
 
@@ -31,30 +27,22 @@ std::shared_ptr<std::vector<std::unordered_set<size_t>>> PossibleMatches::Matche
         unorderedSet = std::make_shared<std::unordered_set<size_t>>();
         matchIndexVector.push_back(*unorderedSet);
     }
-    for(index = 0; index < SASize; ++index){
-        matchIndexVector.at(seqIndices[index]).insert(SAIndices[index]);
+    for (auto & match: SAIndexMap){
+        matchIndexVector.at(match.second).insert(match.first);
     }
 
     return std::make_shared<std::vector<std::unordered_set<size_t>>>(matchIndexVector);
 }
 
-void PossibleMatches::AddSubMatch(std::vector<int> &SA, std::vector<size_t> &seq) {
-    size_t SAsize = SA.size();
-    for (size_t i = 0; i < SAsize; ++i) {
-        if(!uniqueSAIndices.count(SA.at(i))){ //Check if Suffix Array Already exists to avoid duplication
-            InsertMatch(SA.at(i), seq.at(i));
-        }
+void PossibleMatches::AddSubMatch(std::unordered_map<int, size_t> & map) {
+    for(auto &match: map){
+        InsertMatch(const_cast<int &>(match.first), match.second); //Inserts only unique elements.
     }
 }
 
-std::vector<int> &PossibleMatches::getSA() {
-    return SAIndices;
+std::unordered_map<int, size_t> & PossibleMatches::getSAIndexMap() {
+    return SAIndexMap;
 }
-
-std::vector<size_t> &PossibleMatches::getSeq() {
-    return seqIndices;
-}
-
 
 
 
