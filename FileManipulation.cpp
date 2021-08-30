@@ -49,6 +49,10 @@ bool Write_Matches(std::unordered_map<std::string, MatchLocations> &matchesMap,s
     std::vector<std::unordered_set<size_t>> matchIndicesVector;
 
     try{
+        //Clear file before writting to file
+        File.open(outFilename, std::ofstream::out | std::ofstream::trunc);
+        File.close();
+
         File.open(outFilename); //Open for writing
 
         //Write Similarity Metrics

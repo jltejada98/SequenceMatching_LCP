@@ -47,10 +47,14 @@ int main(int argc, const char *argv[]) {
     LCPArrayKasai<int> seqLCPArray(SAVector, *seqStringCombined);
     std::vector<int> LCPVector = seqLCPArray.GetLCPArray();
 
-    //Todo consider subtracting lengths of previous sequence and sentinel so that suffix array indecies are well positioned.
-
     //CREATE SUFFIX ARRAY INDEX TO SEQUENCE MAPPING
     std::shared_ptr<std::vector<size_t>> indexVector = Determine_Index_Mapping(SAVector, seqRangeVector);
+
+    //Todo consider subtracting lengths of previous sequence and sentinel so that suffix array indecies are well positioned.
+    for (int i = 0; i < LCPVector.size(); ++i) {
+        std::cout << i << " " << LCPVector[i] << " " << SAVector[i] << " " << seqStringCombined->substr(SAVector[i], 10) << std::endl;
+    }
+
 
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;

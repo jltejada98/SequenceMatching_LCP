@@ -7,7 +7,7 @@
 std::shared_ptr<std::vector<size_t>> Determine_Index_Mapping(std::vector<int> &SAvector, std::vector<size_t> &seqRangeArray){
     //Determines mapping between SA index and sequence it belongs to.
     size_t SAIndex;
-    int SAShift;
+    long SAShift;
     size_t rangeIndex;
     std::vector<size_t> indexVector;
 
@@ -55,11 +55,12 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector,
         // Add matches to runMap and check for existance based on LCP value (key in map)
     //After determining all strictly increasing runs, add submatching by adding indecies to all matches with ength >= current length
     //Continue adding matches based on runMap.
-
+    size_t runNum = 0;
     while(index < LCPVectorSize){
         if (LCPVector.at(index) >= minimumMatchSize){
             //Todo Consider using threads to find next run?
             //Determine runs and possible matches
+            ++runNum;
             while((index  < LCPVectorSize) && (LCPVector.at(index) >= minimumMatchSize)){ //Determine end of run
                 //Create new runMap
                 runMap = std::make_shared<std::map<size_t, PossibleMatches>>();
@@ -87,7 +88,8 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector,
                 runMapVector.push_back(runMap);
             }
 
-            std::cout << "Completed Run" << std::endl;
+
+
             // Todo Consider using threads to determine submatching
 
             //SUBMATCHING ALGORITHM
@@ -95,7 +97,7 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector,
             std::map<size_t, PossibleMatches>::iterator currMapItem;
             std::map<size_t, PossibleMatches>::iterator currMapEnd;
             size_t runMapVectorSize = runMapVector.size();
-            size_t checkMap;
+            long checkMap;
             std::map<size_t, PossibleMatches>::iterator checkMapItem;
             std::map<size_t, PossibleMatches>::iterator checkMapEnd;
             for (size_t currentMap = 0; currentMap < runMapVectorSize; ++currentMap) {
@@ -112,28 +114,39 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector,
                     }
                     ++currMapItem;
                 }
+            }
+
+            for (size_t currentMap = 0; currentMap < runMapVectorSize; ++currentMap){
                 //Perform submatching on other strictly increasing runs by comparing:
                 //minLCP(CurrentRun) < minLCP(i)  -> Then add match indices from minLCP[CurrentRun] to run I
-                checkMap = 0;
+                // Todo check if this setup does include all indecies for AAB
+                checkMap = currentMap - 1;
                 currMapItem = runMapVector.at(currentMap)->begin();
-                currMapEnd = runMapVector.at(currentMap)->end();
-                while((checkMap < runMapVectorSize) && (currMapItem->first < runMapVector.at(checkMap)->begin()->first)){ //Check min(LCP[currMap]) <= min(LCP[i])
-                    if(checkMap != currentMap){
-                        //Add submatches for currMapItem, against  all of checkMap
-                        // Todo Determine if need to increment  currMapItem
-                        // Todo Determine if only need to compare against
-                        checkMapItem = runMapVector.at(checkMap)->begin();
-                        checkMapEnd = runMapVector.at(checkMap)->end();
-                        while(checkMapItem != checkMapEnd){
-                            currMapItem->second.AddSubMatch(checkMapItem->second.getSAIndexMap());
-                            ++checkMapItem;
-                        }
+                //Add submatches from strictly increasing runs before the current
+                while((checkMap >= 0) && (currMapItem->first < runMapVector.at(checkMap)->begin()->first)){
+                    //Add submatches for currMapItem against all of checkMap.
+                    checkMapItem = runMapVector.at(checkMap)->begin();
+                    checkMapEnd = runMapVector.at(checkMap)->end();
+                    while(checkMapItem != checkMapEnd){
+                        currMapItem->second.AddSubMatch(checkMapItem->second.getSAIndexMap());
+                        ++checkMapItem;
+                    }
+                    --checkMap;
+                }
+                //Add submatches from strictly increasing runs after the curent
+                checkMap = currentMap + 1;
+                while((checkMap < runMapVectorSize) && (currMapItem->first < runMapVector.at(checkMap)->begin()->first)){
+                    checkMapItem = runMapVector.at(checkMap)->begin();
+                    checkMapEnd = runMapVector.at(checkMap)->end();
+                    while(checkMapItem != checkMapEnd){
+                        currMapItem->second.AddSubMatch(checkMapItem->second.getSAIndexMap());
+                        ++checkMapItem;
                     }
                     ++checkMap;
                 }
             }
 
-            std::cout << "Completed Submatching" << std::endl;
+            std::cout << "Completed submatching" << std::endl;
 
             //Determine if each of the possible match lengths has indices from all sequences
             for(auto &map : runMapVector){
@@ -145,12 +158,26 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector,
                         newMatchString = std::make_shared<std::string>(seqStringVector.at(0)->substr(matchIndexForString, matchLength));
                         if(matchesMap.count(*newMatchString)){ //MatchString already exists, merge matches
                             matchesMap.at(*newMatchString).addMatches(matchVector);
+                            std::cout << "Merged " << *newMatchString << std::endl;
+                            for (auto &seqSet: *matchesMap.at(*newMatchString).getMatchVector()){
+                                for (auto &seqIndex : seqSet){
+                                    std::cout << seqIndex << ",";
+                                }
+                                std::cout << std::endl;
+                            }
                         }
                         else{
                             newMatchLocation = std::make_shared<MatchLocations>();
                             newMatchLocation->insertMatchVector(matchVector);
                             newMatchPair = std::make_pair(*newMatchString, *newMatchLocation);
                             matchesMap.insert(newMatchPair);
+                            std::cout << "Inserted " << *newMatchString << std::endl;
+                            for (auto &seqSet: *matchesMap.at(*newMatchString).getMatchVector()){
+                                for (auto &seqIndex : seqSet){
+                                    std::cout << seqIndex << ",";
+                                }
+                                std::cout << std::endl;
+                            }
                         }
                     }
                 }

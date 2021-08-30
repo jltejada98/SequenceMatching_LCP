@@ -21,7 +21,6 @@ std::shared_ptr<std::vector<std::unordered_set<size_t>>> PossibleMatches::Transf
     size_t index;
     std::vector<std::unordered_set<size_t>> matchIndexVector;
     std::shared_ptr<std::unordered_set<size_t>> unorderedSet;
-
     matchIndexVector.reserve(uniqueSeqIndices.size()); //Assume that transfer matches only called when indices included in all sequences
     for (index = 0; index < uniqueSeqIndices.size(); ++index) {
         unorderedSet = std::make_shared<std::unordered_set<size_t>>();
