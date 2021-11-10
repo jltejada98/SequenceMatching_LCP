@@ -8,7 +8,7 @@ PossibleMatches::PossibleMatches() {
 
 }
 
-void PossibleMatches::InsertMatch(int &SAIndex, size_t &seqIndex) {
+void PossibleMatches::InsertMatch(int SAIndex, size_t &seqIndex) {
     SAIndexMap.insert(std::make_pair(SAIndex, seqIndex));
     uniqueSeqIndices.insert(seqIndex); //Only keeps unique seqIndices.
 }

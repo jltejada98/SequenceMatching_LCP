@@ -16,7 +16,7 @@ private:
     std::unordered_set<size_t> uniqueSeqIndices;
 public:
     PossibleMatches();
-    void InsertMatch(int &SAIndex, size_t &seqIndex);
+    void InsertMatch(int SAIndex, size_t &seqIndex);
     void AddSubMatch(std::unordered_map<int, size_t> & map);
     std::unordered_map<int, size_t> & getSAIndexMap();
     size_t UniqueSetIndices();
