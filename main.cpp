@@ -50,12 +50,6 @@ int main(int argc, const char *argv[]) {
     //CREATE SUFFIX ARRAY INDEX TO SEQUENCE MAPPING
     std::shared_ptr<std::vector<size_t>> indexVector = Determine_Index_Mapping(SAVector, seqRangeVector);
 
-    //Todo consider subtracting lengths of previous sequence and sentinel so that suffix array indecies are well positioned.
-    for (int i = 0; i < LCPVector.size(); ++i) {
-        std::cout << i << " " << LCPVector[i] << " " << SAVector[i] << " " << seqStringCombined->substr(SAVector[i], 10) << std::endl;
-    }
-
-
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;
     std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Matches(LCPVector, SAVector,
@@ -65,11 +59,9 @@ int main(int argc, const char *argv[]) {
                                                                                                     numSequences,
                                                                                                     *seqStringCombined);
 
-
     //DETERMINE SIMILARITY METRICS
     std::cout << "Determining Similarity Metrics..." << std::endl;
     std::shared_ptr<std::vector<double>> similarityMetricVector = Determine_SimilarityMetrics(*matchesMap, *seqStringCombined, seqStringVector, numSequences);
-
 
     //Write to outfile
     std::cout << "Writing Results..." << std::endl;

@@ -34,65 +34,60 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::
     std::shared_ptr<std::string> newMatchString;
     std::shared_ptr<MatchLocations> newMatchLocation;
     std::pair<std::string,MatchLocations> newMatchPair;
+    //Todo Merge possible matches and matches map classes
+
+
     //Possible matches map
-    std::shared_ptr<std::map<std::string, PossibleMatches>> runMap;
-    std::pair<std::string, PossibleMatches> runPair;
-    std::shared_ptr<PossibleMatches> runLocation;
+    std::shared_ptr<std::map<std::string, PossibleMatches>> possibleMatchesMap;
+    std::pair<std::string, PossibleMatches> possibleMatchPair;
+    std::shared_ptr<PossibleMatches> possibleMatchLocation;
     std::vector<int> partitionShiftList;
     std::shared_ptr<std::vector<std::shared_ptr<std::string>>> partitions;
     std::shared_ptr<std::vector<int>> partitionsShiftList = std::make_shared<std::vector<int>>(partitionShiftList);
+    possibleMatchesMap = std::make_shared<std::map<std::string, PossibleMatches>>(); //Determine runs and possible matches
 
 
     while(index < LCPVectorSize){
         if (LCPVector.at(index) >= minimumMatchSize){
             //Todo Consider using threads to find next run?
-            //Determine runs and possible matches
-            runMap = std::make_shared<std::map<std::string, PossibleMatches>>();
             while((index  < LCPVectorSize) && (LCPVector.at(index) >= minimumMatchSize)){ //Determine end of run
                 //For each match, partition by taking prefix of suffix
                 partitions = Determine_Partitions(seqStringCombined.substr(SAVector.at(index), LCPVector.at(index)), LCPVector.at(index), minimumMatchSize, partitionsShiftList);
                 //Check all partitions against map
                 for (size_t i = 0; i < partitions->size(); ++i) { //Iterate all partitions.
-                    if(runMap->count(*partitions->at(i))){ //If partition exists, add match location
-                        runMap->at(*partitions->at(i)).InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
+                    if(possibleMatchesMap->count(*partitions->at(i))){ //If partition exists, add match location
+                        possibleMatchesMap->at(*partitions->at(i)).InsertMatch(SAVector.at(index - 1) + partitionsShiftList->at(i), indexVector.at(index - 1));
+                        possibleMatchesMap->at(*partitions->at(i)).InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
                     }
                     else{ //Create new possible match
-                        runLocation = std::make_shared<PossibleMatches>();
-                        runLocation->InsertMatch(SAVector.at(index - 1) + partitionsShiftList->at(i), indexVector.at(index - 1));
-                        runLocation->InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
-                        runPair = std::make_pair(*partitions->at(i), *runLocation);
-                        runMap->insert(runPair);
+                        possibleMatchLocation = std::make_shared<PossibleMatches>();
+                        possibleMatchLocation->InsertMatch(SAVector.at(index - 1) + partitionsShiftList->at(i), indexVector.at(index - 1));
+                        possibleMatchLocation->InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
+                        possibleMatchPair = std::make_pair(*partitions->at(i), *possibleMatchLocation);
+                        possibleMatchesMap->insert(possibleMatchPair);
                     }
                 }
                 partitions->clear();
                 partitionsShiftList->clear();
                 ++index;
             }
-
-            std::cout << "RunMap Complete" << std::endl;
-
-            //Determine if each of the possible matches has indices from all sequences
-            for(auto &match: *runMap){
-                if(match.second.UniqueSetIndices() >= numSequences){
-                    matchVector = match.second.TransferMatches();
-                    if(matchesMap.count(match.first)){ //MatchString already exists, merge matches
-                        matchesMap.at(match.first).addMatches(matchVector);
-                    }
-                    else{
-                        newMatchString = std::make_shared<std::string>(match.first);
-                        newMatchLocation = std::make_shared<MatchLocations>();
-                        newMatchLocation->insertMatchVector(matchVector);
-                        newMatchPair = std::make_pair(*newMatchString, *newMatchLocation);
-                        matchesMap.insert(newMatchPair);
-                    }
-                }
-            }
-            runMap->clear();
         }
-        else{
-            ++index;
+        ++index;
+    }
+
+    //Determine if each of the possible matches has indices from all sequences
+    for(auto &match: *possibleMatchesMap){
+        if(match.second.UniqueSetIndices() >= numSequences){ //No need to check for existance, since it is guaranteed to exist.
+            matchVector = match.second.TransferMatches();
+            newMatchString = std::make_shared<std::string>(match.first);
+            newMatchLocation = std::make_shared<MatchLocations>();
+            newMatchLocation->insertMatchVector(matchVector);
+            newMatchPair = std::make_pair(*newMatchString, *newMatchLocation);
+            matchesMap.insert(newMatchPair);
         }
     }
+
+    possibleMatchesMap->clear();
 
 
     return std::make_shared<std::unordered_map<std::string, MatchLocations>>(matchesMap);
