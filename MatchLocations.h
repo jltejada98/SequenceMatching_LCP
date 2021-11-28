@@ -10,12 +10,12 @@
 
 class MatchLocations {
 private:
-    std::shared_ptr<std::vector<std::unordered_set<size_t>>> matchVector;
+    std::shared_ptr<std::vector<std::unordered_set<int>>> matchVector;
 public:
     MatchLocations();
-    void insertMatchVector(std::shared_ptr<std::vector<std::unordered_set<size_t>>> vector);
-    void addMatches(const std::shared_ptr<std::vector<std::unordered_set<size_t>>>& vector);
-    std::shared_ptr<std::vector<std::unordered_set<size_t>>> getMatchVector();
+    void insertMatchVector(std::shared_ptr<std::vector<std::unordered_set<int>>> vector);
+    void addMatches(const std::shared_ptr<std::vector<std::unordered_set<int>>>& vector);
+    std::shared_ptr<std::vector<std::unordered_set<int>>> getMatchVector();
 };
 
 

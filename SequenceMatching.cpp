@@ -4,11 +4,11 @@
 
 #include "SequenceMatching.h"
 
-std::shared_ptr<std::vector<size_t>> Determine_Index_Mapping(std::vector<int> &SAvector, std::vector<size_t> &seqRangeArray){
+std::shared_ptr<std::vector<int>> Determine_Index_Mapping(std::vector<int> &SAvector, std::vector<int> &seqRangeArray){
     //Determines mapping between SA index and sequence it belongs to.
-    size_t SAIndex;
-    size_t rangeIndex;
-    std::vector<size_t> indexVector;
+    int SAIndex;
+    int rangeIndex;
+    std::vector<int> indexVector;
 
     for(SAIndex = 0; SAIndex < SAvector.size(); ++SAIndex) {
         rangeIndex = 0;
@@ -19,18 +19,18 @@ std::shared_ptr<std::vector<size_t>> Determine_Index_Mapping(std::vector<int> &S
         indexVector.push_back(rangeIndex);
     }
 
-    return std::make_shared<std::vector<size_t>>(indexVector);
+    return std::make_shared<std::vector<int>>(indexVector);
 }
 
 
 std::shared_ptr<std::unordered_map<std::string, MatchLocations>>
-Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::vector<size_t> &indexVector,
-                  std::vector<std::shared_ptr<std::string>> &seqStringVector, size_t &minimumMatchSize,
-                  size_t &numSequences, std::string &seqStringCombined) {
-    size_t LCPVectorSize = LCPVector.size();
-    size_t index = numSequences; //Guaranteed for LCP[0..numSequences] == 0 due to sentinel higher lexographical order.
+Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::vector<int> &indexVector,
+                  std::vector<std::shared_ptr<std::string>> &seqStringVector, int &minimumMatchSize,
+                  int &numSequences, std::string &seqStringCombined) {
+    int LCPVectorSize = static_cast<int>(LCPVector.size());
+    int index = numSequences; //Guaranteed for LCP[0..numSequences] == 0 due to sentinel higher lexographical order.
     std::unordered_map<std::string, MatchLocations> matchesMap;
-    std::shared_ptr<std::vector<std::unordered_set<size_t>>> matchVector;
+    std::shared_ptr<std::vector<std::unordered_set<int>>> matchVector;
     std::shared_ptr<std::string> newMatchString;
     std::shared_ptr<MatchLocations> newMatchLocation;
     std::pair<std::string,MatchLocations> newMatchPair;
@@ -54,7 +54,7 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::
                 //For each match, partition by taking prefix of suffix
                 partitions = Determine_Partitions(seqStringCombined.substr(SAVector.at(index), LCPVector.at(index)), LCPVector.at(index), minimumMatchSize, partitionsShiftList);
                 //Check all partitions against map
-                for (size_t i = 0; i < partitions->size(); ++i) { //Iterate all partitions.
+                for (int i = 0; i < partitions->size(); ++i) { //Iterate all partitions.
                     if(possibleMatchesMap->count(*partitions->at(i))){ //If partition exists, add match location
                         possibleMatchesMap->at(*partitions->at(i)).InsertMatch(SAVector.at(index - 1) + partitionsShiftList->at(i), indexVector.at(index - 1));
                         possibleMatchesMap->at(*partitions->at(i)).InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
@@ -94,7 +94,7 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<std::string>>>
-Determine_Partitions(const std::string &key, const int &keyLen, const size_t &minLength,
+Determine_Partitions(const std::string &key, const int &keyLen, const int &minLength,
                      std::shared_ptr<std::vector<int>> &partitionsShiftList){
     std::vector<std::shared_ptr<std::string>> partitionsStringList;
 
@@ -112,20 +112,20 @@ Determine_Partitions(const std::string &key, const int &keyLen, const size_t &mi
 std::shared_ptr<std::vector<double>>
 Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &matchesMap, std::string &seqStringCombined,
                             std::vector<std::shared_ptr<std::string>> &seqStringArray,
-                            size_t &numSequences){
-    size_t index;
-    size_t seqIndex;
-    size_t matchLength;
-    size_t overallCoverageSize = 0;
+                            int &numSequences){
+    int index;
+    int seqIndex;
+    int matchLength;
+    int overallCoverageSize = 0;
     std::vector<double> similarityMetricVector;
-    std::vector<std::unordered_set<size_t>> seqVectorSet;
-    std::vector<std::unordered_set<size_t>> matchIndicesVector;
+    std::vector<std::unordered_set<int>> seqVectorSet;
+    std::vector<std::unordered_set<int>> matchIndicesVector;
     for (seqIndex = 0; seqIndex < numSequences; ++seqIndex) {
-        seqVectorSet.emplace_back(std::unordered_set<size_t>());
+        seqVectorSet.emplace_back(std::unordered_set<int>());
     }
     for (auto &match: matchesMap){
         matchIndicesVector = *match.second.getMatchVector();
-        matchLength = match.first.length();
+        matchLength = static_cast<int>(match.first.length());
         for (seqIndex = 0; seqIndex < numSequences ; ++seqIndex) {
             //For each index in each sequence set.
             for (auto &seqSetIndex : matchIndicesVector[seqIndex]){
@@ -136,7 +136,7 @@ Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &mat
         }
     }
     for(seqIndex = 0; seqIndex < numSequences; ++seqIndex){
-        overallCoverageSize += seqVectorSet[seqIndex].size();
+        overallCoverageSize += static_cast<int>(seqVectorSet[seqIndex].size());
         similarityMetricVector.emplace_back((double)seqVectorSet.size()/(double)seqStringArray[seqIndex]->length());
     }
     similarityMetricVector.emplace_back((double) overallCoverageSize /(double)(seqStringCombined.length() - numSequences));

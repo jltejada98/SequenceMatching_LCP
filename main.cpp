@@ -14,7 +14,7 @@ int main(int argc, const char *argv[]) {
         std::cout << "./Sequence_Matching <seq1.txt> <seq2.txt> ... <seqN.txt> <min match length>" << std::endl;
         return EXIT_FAILURE;
     }
-    size_t numSequences = argc-2;
+    int numSequences = argc-2;
     if (numSequences > 32){
         std::cout << "Too Many Sequences \n" <<std::endl;
         std::cout << "Number of Sequences <= 32 \n" <<std::endl;
@@ -22,19 +22,19 @@ int main(int argc, const char *argv[]) {
     }
 
     //READ SEQUENCES
-    size_t index;
-    size_t minimumMatchSize = (std::stoi(argv[argc-1]));
-    size_t lengthSum = 0;
+    int index;
+    int minimumMatchSize = (std::stoi(argv[argc-1]));
+    int lengthSum = 0;
     std::vector<std::shared_ptr<std::string>> seqStringVector;
-    std::vector<size_t> seqRangeVector;
+    std::vector<int> seqRangeVector;
     std::cout << "Reading Files..." << std::endl;
     for (index = 0; index < numSequences; ++index) {
         seqStringVector.push_back(Load_Sequence((char *) argv[index + 1]));
         if (seqStringVector[index] == nullptr){
             return EXIT_FAILURE;
         }
-        seqRangeVector.push_back(lengthSum + seqStringVector[index]->length());
-        lengthSum = seqStringVector[index]->length() + 1; //Add for sentinel
+        seqRangeVector.push_back(lengthSum + static_cast<int>(seqStringVector[index]->length()));
+        lengthSum = static_cast<int>(seqStringVector[index]->length()) + 1; //Add for sentinel
     }
 
     //COMBINE SEQUENCES AND ADD SENTINELS
@@ -42,13 +42,13 @@ int main(int argc, const char *argv[]) {
 
     //CREATE SUFFIX ARRAY AND LCP ARRAYS
     std::cout << "Determining Suffix/LCP arrays..." << std::endl;
-    SuffixArray<int> seqSuffixArray(*seqStringCombined); //Todo modify Sais.c to use size_t
+    SuffixArray<int> seqSuffixArray(*seqStringCombined); //Todo modify Sais.c to use int
     std::vector<int> SAVector = seqSuffixArray.GetSuffixArray();
     LCPArrayKasai<int> seqLCPArray(SAVector, *seqStringCombined);
     std::vector<int> LCPVector = seqLCPArray.GetLCPArray();
 
     //CREATE SUFFIX ARRAY INDEX TO SEQUENCE MAPPING
-    std::shared_ptr<std::vector<size_t>> indexVector = Determine_Index_Mapping(SAVector, seqRangeVector);
+    std::shared_ptr<std::vector<int>> indexVector = Determine_Index_Mapping(SAVector, seqRangeVector);
 
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;

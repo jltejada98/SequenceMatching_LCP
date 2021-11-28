@@ -8,38 +8,38 @@ PossibleMatches::PossibleMatches() {
 
 }
 
-void PossibleMatches::InsertMatch(int SAIndex, size_t &seqIndex) {
+void PossibleMatches::InsertMatch(int SAIndex, int &seqIndex) {
     SAIndexMap.insert(std::make_pair(SAIndex, seqIndex));
     uniqueSeqIndices.insert(seqIndex); //Only keeps unique seqIndices.
 }
 
-size_t PossibleMatches::UniqueSetIndices() {
+int PossibleMatches::UniqueSetIndices() {
     return uniqueSeqIndices.size();
 }
 
-std::shared_ptr<std::vector<std::unordered_set<size_t>>> PossibleMatches::TransferMatches() {
-    size_t index;
-    std::vector<std::unordered_set<size_t>> matchIndexVector;
-    std::shared_ptr<std::unordered_set<size_t>> unorderedSet;
+std::shared_ptr<std::vector<std::unordered_set<int>>> PossibleMatches::TransferMatches() {
+    int index;
+    std::vector<std::unordered_set<int>> matchIndexVector;
+    std::shared_ptr<std::unordered_set<int>> unorderedSet;
     matchIndexVector.reserve(uniqueSeqIndices.size()); //Assume that transfer matches only called when indices included in all sequences
     for (index = 0; index < uniqueSeqIndices.size(); ++index) {
-        unorderedSet = std::make_shared<std::unordered_set<size_t>>();
+        unorderedSet = std::make_shared<std::unordered_set<int>>();
         matchIndexVector.push_back(*unorderedSet);
     }
     for (auto & match: SAIndexMap){
         matchIndexVector.at(match.second).insert(match.first);
     }
 
-    return std::make_shared<std::vector<std::unordered_set<size_t>>>(matchIndexVector);
+    return std::make_shared<std::vector<std::unordered_set<int>>>(matchIndexVector);
 }
 
-void PossibleMatches::AddSubMatch(std::unordered_map<int, size_t> & map) {
+void PossibleMatches::AddSubMatch(std::unordered_map<int, int> & map) {
     for(auto &match: map){
         InsertMatch(const_cast<int &>(match.first), match.second); //Inserts only unique elements.
     }
 }
 
-std::unordered_map<int, size_t> & PossibleMatches::getSAIndexMap() {
+std::unordered_map<int, int> & PossibleMatches::getSAIndexMap() {
     return SAIndexMap;
 }
 
