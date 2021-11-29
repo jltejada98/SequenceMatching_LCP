@@ -4,25 +4,26 @@
 
 #include "MatchLocations.h"
 
-#include <utility>
-
-MatchLocations::MatchLocations() {
-    matchVector = nullptr;
-}
-
-void MatchLocations::insertMatchVector(std::shared_ptr<std::vector<std::unordered_set<int>>> vector) {
-    matchVector = std::move(vector);
-}
-
-void MatchLocations::addMatches(const std::shared_ptr<std::vector<std::unordered_set<int>>>& vector) {
-    int vectorSize = vector->size();
-    for (int seqInd = 0; seqInd < vectorSize; ++seqInd) { //Insert all matches from set into corresponding vector.
-        matchVector->at(seqInd).insert(vector->at(seqInd).begin(), vector->at(seqInd).end()); //Insertion only keeps unique indecies
+MatchLocations::MatchLocations(int & numSequences) {
+    int index;
+    std::shared_ptr<std::unordered_set<int>> unorderedSet;
+    matchVector.reserve(numSequences);
+    for (index = 0; index < numSequences; ++index) {
+        unorderedSet = std::make_shared<std::unordered_set<int>>();
+        matchVector.push_back(*unorderedSet);
     }
+    uniqueSeqIndices.clear();
+}
 
+void MatchLocations::InsertMatch(int SAIndex, int &seqIndex) {
+    matchVector.at(seqIndex).insert(SAIndex);
+    uniqueSeqIndices.insert(seqIndex); //Only keeps unique seqIndices.
+}
+
+int MatchLocations::numSeqIncluded() {
+    return uniqueSeqIndices.size();
 }
 
 std::shared_ptr<std::vector<std::unordered_set<int>>> MatchLocations::getMatchVector() {
-    return matchVector;
+    return std::make_shared<std::vector<std::unordered_set<int>>>(matchVector);
 }
-

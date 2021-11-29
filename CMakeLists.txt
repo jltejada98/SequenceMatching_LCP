@@ -8,4 +8,4 @@ add_executable(SequenceMatching_LCP main.cpp
         FileManipulation.cpp
         FileManipulation.h
         MatchLocations.cpp
-        MatchLocations.h SequenceMatching.cpp SequenceMatching.h PossibleMatches.cpp PossibleMatches.h)
+        MatchLocations.h SequenceMatching.cpp SequenceMatching.h)

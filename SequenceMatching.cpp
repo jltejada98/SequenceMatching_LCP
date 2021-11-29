@@ -6,6 +6,7 @@
 
 std::shared_ptr<std::vector<int>> Determine_Index_Mapping(std::vector<int> &SAvector, std::vector<int> &seqRangeArray){
     //Determines mapping between SA index and sequence it belongs to.
+    int shift;
     int SAIndex;
     int rangeIndex;
     std::vector<int> indexVector;
@@ -16,6 +17,8 @@ std::shared_ptr<std::vector<int>> Determine_Index_Mapping(std::vector<int> &SAve
         while(SAvector[SAIndex] > seqRangeArray[rangeIndex]){
             ++rangeIndex;
         }
+        shift = rangeIndex > 0 ? seqRangeArray[rangeIndex-1]+1 : 0;
+        SAvector[SAIndex] -= shift;
         indexVector.push_back(rangeIndex);
     }
 
@@ -25,46 +28,42 @@ std::shared_ptr<std::vector<int>> Determine_Index_Mapping(std::vector<int> &SAve
 
 std::shared_ptr<std::unordered_map<std::string, MatchLocations>>
 Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::vector<int> &indexVector,
-                  std::vector<std::shared_ptr<std::string>> &seqStringVector, int &minimumMatchSize,
-                  int &numSequences, std::string &seqStringCombined) {
+                  int &minimumMatchSize, int &maximumMatchSize, int &numSequences,
+                  std::vector<std::shared_ptr<std::string>> &seqStringVector, std::vector<int> &seqRangeVector) {
     int LCPVectorSize = static_cast<int>(LCPVector.size());
     int index = numSequences; //Guaranteed for LCP[0..numSequences] == 0 due to sentinel higher lexographical order.
+    int sequenceShift;
     std::unordered_map<std::string, MatchLocations> matchesMap;
     std::shared_ptr<std::vector<std::unordered_set<int>>> matchVector;
     std::shared_ptr<std::string> newMatchString;
+    std::vector<std::string> matchesMapKeys;
     std::shared_ptr<MatchLocations> newMatchLocation;
-    std::pair<std::string,MatchLocations> newMatchPair;
-    //Todo Merge possible matches and matches map classes
-
-
-    //Possible matches map
-    std::shared_ptr<std::map<std::string, PossibleMatches>> possibleMatchesMap;
-    std::pair<std::string, PossibleMatches> possibleMatchPair;
-    std::shared_ptr<PossibleMatches> possibleMatchLocation;
     std::vector<int> partitionShiftList;
     std::shared_ptr<std::vector<std::shared_ptr<std::string>>> partitions;
     std::shared_ptr<std::vector<int>> partitionsShiftList = std::make_shared<std::vector<int>>(partitionShiftList);
-    possibleMatchesMap = std::make_shared<std::map<std::string, PossibleMatches>>(); //Determine runs and possible matches
 
+    //Todo Consider splitting SA, and using threads to process each (Requires concurrent matchMap).
 
     while(index < LCPVectorSize){
         if (LCPVector.at(index) >= minimumMatchSize){
-            //Todo Consider using threads to find next run?
             while((index  < LCPVectorSize) && (LCPVector.at(index) >= minimumMatchSize)){ //Determine end of run
                 //For each match, partition by taking prefix of suffix
-                partitions = Determine_Partitions(seqStringCombined.substr(SAVector.at(index), LCPVector.at(index)), LCPVector.at(index), minimumMatchSize, partitionsShiftList);
+                partitions = Determine_Partitions(seqStringVector[indexVector[index]]->substr(SAVector.at(index), LCPVector.at(index)),
+                                                  LCPVector.at(index), minimumMatchSize, maximumMatchSize,
+                                                  partitionsShiftList);
                 //Check all partitions against map
                 for (int i = 0; i < partitions->size(); ++i) { //Iterate all partitions.
-                    if(possibleMatchesMap->count(*partitions->at(i))){ //If partition exists, add match location
-                        possibleMatchesMap->at(*partitions->at(i)).InsertMatch(SAVector.at(index - 1) + partitionsShiftList->at(i), indexVector.at(index - 1));
-                        possibleMatchesMap->at(*partitions->at(i)).InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
+                    if(matchesMap.count(*partitions->at(i))){ //If partition exists, add match location
+                        matchesMap.at(*partitions->at(i)).InsertMatch(SAVector.at(index - 1) + partitionsShiftList->at(i), indexVector.at(index - 1));
+                        matchesMap.at(*partitions->at(i)).InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
                     }
                     else{ //Create new possible match
-                        possibleMatchLocation = std::make_shared<PossibleMatches>();
-                        possibleMatchLocation->InsertMatch(SAVector.at(index - 1) + partitionsShiftList->at(i), indexVector.at(index - 1));
-                        possibleMatchLocation->InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
-                        possibleMatchPair = std::make_pair(*partitions->at(i), *possibleMatchLocation);
-                        possibleMatchesMap->insert(possibleMatchPair);
+                        newMatchLocation = std::make_shared<MatchLocations>(numSequences);
+                        newMatchLocation->InsertMatch(SAVector.at(index - 1) + partitionsShiftList->at(i), indexVector.at(index - 1));
+                        newMatchLocation->InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
+                        std::pair<std::string, MatchLocations> newMatchPair = std::make_pair(*partitions->at(i), *newMatchLocation);
+                        matchesMap.insert(newMatchPair);
+                        matchesMapKeys.push_back(*partitions->at(i));
                     }
                 }
                 partitions->clear();
@@ -75,33 +74,26 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::
         ++index;
     }
 
-    //Determine if each of the possible matches has indices from all sequences
-    for(auto &match: *possibleMatchesMap){
-        if(match.second.UniqueSetIndices() >= numSequences){ //No need to check for existance, since it is guaranteed to exist.
-            matchVector = match.second.TransferMatches();
-            newMatchString = std::make_shared<std::string>(match.first);
-            newMatchLocation = std::make_shared<MatchLocations>();
-            newMatchLocation->insertMatchVector(matchVector);
-            newMatchPair = std::make_pair(*newMatchString, *newMatchLocation);
-            matchesMap.insert(newMatchPair);
+    //Determine if each of the possible match has indices from all sequences, otherwise remove entry.
+    for(auto & key: matchesMapKeys){
+        if(matchesMap.at(key).numSeqIncluded() < numSequences){
+            matchesMap.erase(key);
         }
     }
-
-    possibleMatchesMap->clear();
 
 
     return std::make_shared<std::unordered_map<std::string, MatchLocations>>(matchesMap);
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<std::string>>>
-Determine_Partitions(const std::string &key, const int &keyLen, const int &minLength,
-                     std::shared_ptr<std::vector<int>> &partitionsShiftList){
+Determine_Partitions(const std::string &key, const int &keyLen, const int &minLength, const int &maxLength,
+                     std::shared_ptr<std::vector<int>> &partitionsShiftList) {
     std::vector<std::shared_ptr<std::string>> partitionsStringList;
-
-    for(int p = keyLen; p >= minLength; --p){
-        for (int i = 0; (i+p) <= keyLen ; ++i){
-            partitionsShiftList->push_back(i);
-            partitionsStringList.push_back(std::make_shared<std::string>(std::string(key.substr(i, p))));
+    int paritionLength = keyLen < maxLength ? keyLen : maxLength;
+    for(; paritionLength >= minLength; --paritionLength){
+        for (int partitionIndex = 0; (partitionIndex + paritionLength) <= keyLen ; ++partitionIndex){
+            partitionsShiftList->push_back(partitionIndex);
+            partitionsStringList.push_back(std::make_shared<std::string>(std::string(key.substr(partitionIndex, paritionLength))));
         }
     }
 
@@ -111,35 +103,37 @@ Determine_Partitions(const std::string &key, const int &keyLen, const int &minLe
 
 std::shared_ptr<std::vector<double>>
 Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &matchesMap, std::string &seqStringCombined,
-                            std::vector<std::shared_ptr<std::string>> &seqStringArray,
-                            int &numSequences){
-    int index;
+                            std::vector<std::shared_ptr<std::string>> &seqStringVector,
+                            std::vector<int> &seqRangeVector, int &numSequences) {
     int seqIndex;
-    int matchLength;
+    int matchSet;
+    int matchIndices;
     int overallCoverageSize = 0;
     std::vector<double> similarityMetricVector;
-    std::vector<std::unordered_set<int>> seqVectorSet;
-    std::vector<std::unordered_set<int>> matchIndicesVector;
+    std::vector<std::unordered_set<int>> matchVector;
+    std::vector<std::unordered_set<int>> matchCoverageVector;
     for (seqIndex = 0; seqIndex < numSequences; ++seqIndex) {
-        seqVectorSet.emplace_back(std::unordered_set<int>());
+        matchCoverageVector.emplace_back(std::unordered_set<int>());
     }
-    for (auto &match: matchesMap){
-        matchIndicesVector = *match.second.getMatchVector();
-        matchLength = static_cast<int>(match.first.length());
-        for (seqIndex = 0; seqIndex < numSequences ; ++seqIndex) {
-            //For each index in each sequence set.
-            for (auto &seqSetIndex : matchIndicesVector[seqIndex]){
-                for (index = seqSetIndex; index < (seqSetIndex+matchLength); ++index){
-                    seqVectorSet[seqIndex].insert(index);
+
+    for(auto &match: matchesMap){
+        matchVector = *(match.second.getMatchVector());
+        for(matchSet = 0; matchSet < numSequences; ++matchSet){
+            for(auto &matchIndex: matchVector.at(matchSet)){
+                for(matchIndices = matchIndex; matchIndices < (matchIndex + match.first.length()); ++matchIndices){
+                    matchCoverageVector[matchSet].insert(matchIndices);
                 }
             }
         }
     }
+
     for(seqIndex = 0; seqIndex < numSequences; ++seqIndex){
-        overallCoverageSize += static_cast<int>(seqVectorSet[seqIndex].size());
-        similarityMetricVector.emplace_back((double)seqVectorSet.size()/(double)seqStringArray[seqIndex]->length());
+        overallCoverageSize += static_cast<int>(matchCoverageVector[seqIndex].size());
+        similarityMetricVector.push_back((double)matchCoverageVector[seqIndex].size()/(double)(seqStringVector[seqIndex]->length())); //Subtracting number of sentinels before current sequence
     }
-    similarityMetricVector.emplace_back((double) overallCoverageSize /(double)(seqStringCombined.length() - numSequences));
+
+    similarityMetricVector.push_back((double) overallCoverageSize / (double) (seqStringCombined.length()-numSequences)); //Subtracting total number of sentinels
+
 
     return std::make_shared<std::vector<double>>(similarityMetricVector);
 }

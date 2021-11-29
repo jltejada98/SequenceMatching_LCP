@@ -11,19 +11,14 @@ CMakeFiles/SequenceMatching_LCP.dir/FileManipulation.cpp.o: \
 CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o: \
  ../MatchLocations.cpp \
  ../MatchLocations.h
-CMakeFiles/SequenceMatching_LCP.dir/PossibleMatches.cpp.o: \
- ../PossibleMatches.cpp \
- ../PossibleMatches.h
 CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o: \
  ../MatchLocations.h \
- ../PossibleMatches.h \
  ../SequenceMatching.cpp \
  ../SequenceMatching.h
 CMakeFiles/SequenceMatching_LCP.dir/main.cpp.o: \
  ../FileManipulation.h \
  ../LCPArrayKasai.hpp \
  ../MatchLocations.h \
- ../PossibleMatches.h \
  ../Sais.h \
  ../SequenceMatching.h \
  ../SuffixArray.hpp \
