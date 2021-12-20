@@ -42,7 +42,8 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::
     std::shared_ptr<std::vector<std::shared_ptr<std::string>>> partitions;
     std::shared_ptr<std::vector<int>> partitionsShiftList = std::make_shared<std::vector<int>>(partitionShiftList);
 
-    //Todo Consider splitting SA, and using threads to process each (Requires concurrent matchMap).
+    //Todo Consider splitting SA, and using threads to process each. Simply have duplicate maps on each thread, merge
+    // the maps once reached end
 
     while(index < LCPVectorSize){
         if (LCPVector.at(index) >= minimumMatchSize){
