@@ -6,11 +6,37 @@
 
 #IncludeRegexTransform: 
 
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/FileManipulation.cpp
+FileManipulation.h
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/FileManipulation.h
+
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/FileManipulation.h
+fstream
+-
+iostream
+-
+unordered_map
+-
+unordered_set
+-
+MatchLocations.h
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h
+
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/LCPArrayKasai.hpp
+vector
+-
+
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.cpp
+MatchLocations.h
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h
+
 /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h
 unordered_set
 -
 vector
 -
+
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/Sais.h
 
 /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.cpp
 SequenceMatching.h
@@ -18,6 +44,8 @@ SequenceMatching.h
 
 /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.h
 vector
+-
+thread
 -
 unordered_map
 -
@@ -27,4 +55,30 @@ iostream
 -
 MatchLocations.h
 /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h
+
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SuffixArray.hpp
+vector
+-
+string
+-
+Sais.h
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/Sais.h
+
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/main.cpp
+FileManipulation.h
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/FileManipulation.h
+MatchLocations.h
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h
+SequenceMatching.h
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.h
+SuffixArray.hpp
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SuffixArray.hpp
+LCPArrayKasai.hpp
+/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/LCPArrayKasai.hpp
+iostream
+-
+vector
+-
+unordered_map
+-
 

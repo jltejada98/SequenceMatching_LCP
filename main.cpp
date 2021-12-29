@@ -65,13 +65,15 @@ int main(int argc, const char *argv[]) {
 
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;
-    std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Matches(LCPVector, SAVector,
-                                                                                                    *indexVector,
-                                                                                                    minimumMatchSize,
-                                                                                                    maximumMatchSize,
-                                                                                                    numSequences,
-                                                                                                    seqStringVector,
-                                                                                                    seqRangeVector);
+    std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Matches_Parent(
+            LCPVector,
+            SAVector,
+            *indexVector,
+            minimumMatchSize,
+            maximumMatchSize,
+            numSequences,
+            seqStringVector,
+            seqRangeVector);
 
     //DETERMINE SIMILARITY METRICS
     std::cout << "Determining Similarity Metrics..." << std::endl;

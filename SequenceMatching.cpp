@@ -25,18 +25,90 @@ std::shared_ptr<std::vector<int>> Determine_Index_Mapping(std::vector<int> &SAve
     return std::make_shared<std::vector<int>>(indexVector);
 }
 
+std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Matches_Parent(
+        std::vector<int> &LCPVector, std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
+        int maximumMatchSize, int numSequences, std::vector<std::shared_ptr<std::string>> &seqStringVector,
+        std::vector<int> &seqRangeVector){
+    int i;
+    size_t numSplits = std::thread::hardware_concurrency();
+    std::thread threadArray[numSplits];
+    size_t splitSize = SAVector.size() / numSplits;
+    size_t splitRemainder = SAVector.size() % numSplits; //Determine remainder, and add to first task.
+    size_t startIndex = 0; //Guaranteed for LCP[0..numSequences] == 0 due to sentinel higher lexographical order (Only for 1st thread)
+    size_t endIndex = splitSize + splitRemainder;
+    std::vector<std::shared_ptr<std::unordered_map<std::string, MatchLocations>>> threadMapVector;
 
-std::shared_ptr<std::unordered_map<std::string, MatchLocations>>
-Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::vector<int> &indexVector,
-                  int &minimumMatchSize, int &maximumMatchSize, int &numSequences,
-                  std::vector<std::shared_ptr<std::string>> &seqStringVector, std::vector<int> &seqRangeVector) {
-    int LCPVectorSize = static_cast<int>(LCPVector.size());
-    int index = numSequences; //Guaranteed for LCP[0..numSequences] == 0 due to sentinel higher lexographical order.
-    int sequenceShift;
+    //Initialize Vector
+    for (i = 0; i < numSplits; ++i) { //Check if works
+        std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = std::make_shared<std::unordered_map<std::string, MatchLocations>>();
+        threadMapVector.push_back(matchesMap);
+    }
+
+    //Create 1st Thread
+    threadArray[0] = std::thread(Determine_Matches_Child, std::ref(*threadMapVector[0]), std::ref(LCPVector),
+                                 std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
+                                 numSequences, std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
+//    Determine_Matches_Child(*threadMapVector[0], LCPVector, SAVector, indexVector, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, seqRangeVector, startIndex, endIndex);
+
+
+    //Create subsequent threads
+    for (i = 1; i < numSplits; ++i) {
+        startIndex = endIndex;
+        endIndex = startIndex+splitSize;
+        threadArray[i] = std::thread(Determine_Matches_Child, std::ref(*threadMapVector[i]), std::ref(LCPVector),
+                                     std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
+                                     numSequences, std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
+//        Determine_Matches_Child(*threadMapVector[i], LCPVector, SAVector, indexVector, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, seqRangeVector, startIndex, endIndex);
+    }
+
+    //Wait for all threads to complete
+    //Todo Consider adding std::this_thread::yield(); Either in for loop or outside
+    for (i=0; i<numSplits; i++){
+        threadArray[i].join();
+    }
+
+    //Merge matchesMap
     std::unordered_map<std::string, MatchLocations> matchesMap;
+    std::vector<std::string> matchesMapKeys;
+
+    for (int threadMapIndex = 0; threadMapIndex < numSplits; ++threadMapIndex) {
+        for(auto &threadMapMatch: *threadMapVector.at(threadMapIndex)) { //For each match in threadMap
+            if(matchesMap.count(threadMapMatch.first)){ //If match already exists, add sequence indecies
+                matchesMap.at(threadMapMatch.first).mergeMatches(threadMapMatch.second.getMatchVector(), threadMapMatch.second.getUniqueSeqIndices());
+            }
+            else{ //Create new pair and push to map
+                matchesMapKeys.push_back(threadMapMatch.first);
+                std::pair<std::string, MatchLocations> newMatchPair = std::make_pair(threadMapMatch.first, threadMapMatch.second);
+                matchesMap.insert(newMatchPair);
+            }
+        }
+        threadMapVector.at(threadMapIndex)->clear();
+    }
+
+    //Check if has items from all sequences.
+    for(auto & key: matchesMapKeys){
+        if(matchesMap.at(key).numSeqIncluded() < numSequences){
+            matchesMap.erase(key);
+        }
+    }
+
+    return std::make_shared<std::unordered_map<std::string, MatchLocations>>(matchesMap);
+}
+
+
+
+
+void Determine_Matches_Child(std::unordered_map<std::string, MatchLocations> &matchesMap, std::vector<int> &LCPVector,
+                             std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
+                             int maximumMatchSize, int numSequences,
+                             std::vector<std::shared_ptr<std::string>> &seqStringVector,
+                             std::vector<int> &seqRangeVector, size_t startIndex, size_t endIndex) {
+    size_t index = startIndex;
+    size_t hardEndIndex = SAVector.size();
     std::shared_ptr<std::vector<std::unordered_set<int>>> matchVector;
     std::shared_ptr<std::string> newMatchString;
     std::vector<std::string> matchesMapKeys;
+
     std::shared_ptr<MatchLocations> newMatchLocation;
     std::vector<int> partitionShiftList;
     std::shared_ptr<std::vector<std::shared_ptr<std::string>>> partitions;
@@ -45,9 +117,9 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::
     //Todo Consider splitting SA, and using threads to process each. Simply have duplicate maps on each thread, merge
     // the maps once reached end
 
-    while(index < LCPVectorSize){
+    while(index < endIndex){
         if (LCPVector.at(index) >= minimumMatchSize){
-            while((index  < LCPVectorSize) && (LCPVector.at(index) >= minimumMatchSize)){ //Determine end of run
+            while((index  < hardEndIndex) && (LCPVector.at(index) >= minimumMatchSize)){ //Determine end of run
                 //For each match, partition by taking prefix of suffix
                 partitions = Determine_Partitions(seqStringVector[indexVector[index]]->substr(SAVector.at(index), LCPVector.at(index)),
                                                   LCPVector.at(index), minimumMatchSize, maximumMatchSize,
@@ -74,27 +146,19 @@ Determine_Matches(std::vector<int> &LCPVector, std::vector<int> &SAVector, std::
         }
         ++index;
     }
+    std::cout << "Child finished processing" << std::endl;
 
-    //Determine if each of the possible match has indices from all sequences, otherwise remove entry.
-    for(auto & key: matchesMapKeys){
-        if(matchesMap.at(key).numSeqIncluded() < numSequences){
-            matchesMap.erase(key);
-        }
-    }
-
-
-    return std::make_shared<std::unordered_map<std::string, MatchLocations>>(matchesMap);
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<std::string>>>
 Determine_Partitions(const std::string &key, const int &keyLen, const int &minLength, const int &maxLength,
                      std::shared_ptr<std::vector<int>> &partitionsShiftList) {
     std::vector<std::shared_ptr<std::string>> partitionsStringList;
-    int paritionLength = keyLen < maxLength ? keyLen : maxLength;
-    for(; paritionLength >= minLength; --paritionLength){
-        for (int partitionIndex = 0; (partitionIndex + paritionLength) <= keyLen ; ++partitionIndex){
+    int partitionLength = keyLen < maxLength ? keyLen : maxLength;
+    for(; partitionLength >= minLength; --partitionLength){
+        for (int partitionIndex = 0; (partitionIndex + partitionLength) <= keyLen ; ++partitionIndex){
             partitionsShiftList->push_back(partitionIndex);
-            partitionsStringList.push_back(std::make_shared<std::string>(std::string(key.substr(partitionIndex, paritionLength))));
+            partitionsStringList.push_back(std::make_shared<std::string>(std::string(key.substr(partitionIndex, partitionLength))));
         }
     }
 

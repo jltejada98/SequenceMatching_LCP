@@ -27,3 +27,20 @@ int MatchLocations::numSeqIncluded() {
 std::shared_ptr<std::vector<std::unordered_set<int>>> MatchLocations::getMatchVector() {
     return std::make_shared<std::vector<std::unordered_set<int>>>(matchVector);
 }
+
+std::shared_ptr<std::unordered_set<int>> MatchLocations::getUniqueSeqIndices() {
+    return std::make_shared<std::unordered_set<int>>(uniqueSeqIndices);
+}
+
+void MatchLocations::mergeMatches(const std::shared_ptr<std::vector<std::unordered_set<int>>> &matchVectorToMerge,
+                                  const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies) {
+    for (auto &mergeSeqIndex: *mergeSeqIndecies) { //Add the sequence indecies
+        uniqueSeqIndices.insert(mergeSeqIndex);
+    }
+
+    for (int i = 0; i < numSeqIncluded(); ++i) {
+        matchVector[i].insert(matchVectorToMerge->at(i).begin(), matchVectorToMerge->at(i).end());
+    }
+    matchVectorToMerge->clear(); //After merging clear contents of merged set.
+}
+
