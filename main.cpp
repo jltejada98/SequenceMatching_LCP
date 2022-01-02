@@ -11,11 +11,11 @@ int main(int argc, const char *argv[]) {
     //CHECK ARGUMENTS
     if (argc < 5){
         std::cout << "Incorrect Arguments \n" <<std::endl;
-        std::cout << "./Sequence_Matching <seq1.txt> <seq2.txt> ... <seqN.txt> <min match length>" << std::endl;
+        std::cout << "./Sequence_Matching <seq1.txt> <seq2.txt> ... <seqN.txt> <min match length> <max match length>" << std::endl;
         return EXIT_FAILURE;
     }
     int numSequences = argc-3;
-    if (numSequences > 32){
+    if (numSequences > 32){ //Todo Change Sentinel Characters to allow for more sequencecs to be inputted.
         std::cout << "Too Many Sequences \n" <<std::endl;
         std::cout << "Number of Sequences <= 32 \n" <<std::endl;
         return EXIT_FAILURE;
@@ -30,6 +30,11 @@ int main(int argc, const char *argv[]) {
     }
     else{
         maximumMatchSize = INT_MAX;
+    }
+
+    if(minimumMatchSize > maximumMatchSize){
+        std::cout << "Minimum Match Size <= Maximum Match Size \n" << std::endl;
+        return EXIT_FAILURE;
     }
 
     int lengthSum = 0;
@@ -57,11 +62,6 @@ int main(int argc, const char *argv[]) {
 
     //CREATE SUFFIX ARRAY INDEX TO SEQUENCE MAPPING
     std::shared_ptr<std::vector<int>> indexVector = Determine_Index_Mapping(SAVector, seqRangeVector);
-
-    for (int i = 0; i < SAVector.size(); ++i) {
-        std::cout << SAVector.at(i) << " " << indexVector->at(i) << std::endl;
-    }
-
 
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;

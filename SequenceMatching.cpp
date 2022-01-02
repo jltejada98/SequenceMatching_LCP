@@ -30,6 +30,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Match
         int maximumMatchSize, int numSequences, std::vector<std::shared_ptr<std::string>> &seqStringVector,
         std::vector<int> &seqRangeVector){
     int i;
+    int threadMapIndex;
     size_t numSplits = std::thread::hardware_concurrency();
     std::thread threadArray[numSplits];
     size_t splitSize = SAVector.size() / numSplits;
@@ -48,7 +49,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Match
     threadArray[0] = std::thread(Determine_Matches_Child, std::ref(*threadMapVector[0]), std::ref(LCPVector),
                                  std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
                                  numSequences, std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
-//    Determine_Matches_Child(*threadMapVector[0], LCPVector, SAVector, indexVector, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, seqRangeVector, startIndex, endIndex);
+//    Determine_Matches_Child(*threadMapVector[0], LCPVector, SAVector, indexVector, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, seqRangeVector, startIndex, endIndex);  //Single Threaded for Testing
 
 
     //Create subsequent threads
@@ -58,7 +59,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Match
         threadArray[i] = std::thread(Determine_Matches_Child, std::ref(*threadMapVector[i]), std::ref(LCPVector),
                                      std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
                                      numSequences, std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
-//        Determine_Matches_Child(*threadMapVector[i], LCPVector, SAVector, indexVector, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, seqRangeVector, startIndex, endIndex);
+//        Determine_Matches_Child(*threadMapVector[i], LCPVector, SAVector, indexVector, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, seqRangeVector, startIndex, endIndex); //Single Threaded for Testing
     }
 
     //Wait for all threads to complete
@@ -71,7 +72,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Match
     std::unordered_map<std::string, MatchLocations> matchesMap;
     std::vector<std::string> matchesMapKeys;
 
-    for (int threadMapIndex = 0; threadMapIndex < numSplits; ++threadMapIndex) {
+    for (threadMapIndex = 0; threadMapIndex < numSplits; ++threadMapIndex) {
         for(auto &threadMapMatch: *threadMapVector.at(threadMapIndex)) { //For each match in threadMap
             if(matchesMap.count(threadMapMatch.first)){ //If match already exists, add sequence indecies
                 matchesMap.at(threadMapMatch.first).mergeMatches(threadMapMatch.second.getMatchVector(), threadMapMatch.second.getUniqueSeqIndices());
@@ -114,12 +115,9 @@ void Determine_Matches_Child(std::unordered_map<std::string, MatchLocations> &ma
     std::shared_ptr<std::vector<std::shared_ptr<std::string>>> partitions;
     std::shared_ptr<std::vector<int>> partitionsShiftList = std::make_shared<std::vector<int>>(partitionShiftList);
 
-    //Todo Consider splitting SA, and using threads to process each. Simply have duplicate maps on each thread, merge
-    // the maps once reached end
-
     while(index < endIndex){
-        if (LCPVector.at(index) >= minimumMatchSize){
-            while((index  < hardEndIndex) && (LCPVector.at(index) >= minimumMatchSize)){ //Determine end of run
+        if ((LCPVector.at(index) >= minimumMatchSize) && (LCPVector.at(index) <= maximumMatchSize)){
+            while((index  < hardEndIndex) && (LCPVector.at(index) >= minimumMatchSize) && (LCPVector.at(index) <= maximumMatchSize)){ //Determine end of run
                 //For each match, partition by taking prefix of suffix
                 partitions = Determine_Partitions(seqStringVector[indexVector[index]]->substr(SAVector.at(index), LCPVector.at(index)),
                                                   LCPVector.at(index), minimumMatchSize, maximumMatchSize,
@@ -146,7 +144,6 @@ void Determine_Matches_Child(std::unordered_map<std::string, MatchLocations> &ma
         }
         ++index;
     }
-    std::cout << "Child finished processing" << std::endl;
 
 }
 

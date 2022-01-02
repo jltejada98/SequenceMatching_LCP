@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/FileManipulation.cpp
-FileManipulation.h
-/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/FileManipulation.h
-
 /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/FileManipulation.h
 fstream
 -
@@ -26,10 +22,6 @@ MatchLocations.h
 vector
 -
 
-/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.cpp
-MatchLocations.h
-/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h
-
 /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h
 unordered_set
 -
@@ -37,10 +29,6 @@ vector
 -
 
 /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/Sais.h
-
-/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.cpp
-SequenceMatching.h
-/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.h
 
 /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SequenceMatching.h
 vector
