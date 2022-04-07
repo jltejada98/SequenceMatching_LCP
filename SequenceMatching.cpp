@@ -68,11 +68,14 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Match
         threadArray[i].join();
     }
 
+    std::cout << "Merging Match Threads" << std::endl;
+
     //Merge matchesMap
     std::unordered_map<std::string, MatchLocations> matchesMap;
     std::vector<std::string> matchesMapKeys;
 
     for (threadMapIndex = 0; threadMapIndex < numSplits; ++threadMapIndex) {
+        std::cout << "Merging Thread: " << threadMapIndex << std::endl;
         for(auto &threadMapMatch: *threadMapVector.at(threadMapIndex)) { //For each match in threadMap
             if(matchesMap.count(threadMapMatch.first)){ //If match already exists, add sequence indecies
                 matchesMap.at(threadMapMatch.first).mergeMatches(threadMapMatch.second.getMatchVector(), threadMapMatch.second.getUniqueSeqIndices());
@@ -86,6 +89,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Match
         threadMapVector.at(threadMapIndex)->clear();
     }
 
+    std::cout <<  "Removing non-qualifying matches" << std::endl;
     //Check if has items from all sequences.
     for(auto & key: matchesMapKeys){
         if(matchesMap.at(key).numSeqIncluded() < numSequences){
