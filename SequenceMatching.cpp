@@ -120,8 +120,8 @@ void Determine_Matches_Child(std::unordered_map<std::string, MatchLocations> &ma
     std::shared_ptr<std::vector<int>> partitionsShiftList = std::make_shared<std::vector<int>>(partitionShiftList);
 
     while(index < endIndex){
-        if ((LCPVector.at(index) >= minimumMatchSize) && (LCPVector.at(index) <= maximumMatchSize)){
-            while((index  < hardEndIndex) && (LCPVector.at(index) >= minimumMatchSize) && (LCPVector.at(index) <= maximumMatchSize)){ //Determine end of run
+        if (LCPVector.at(index) >= minimumMatchSize){
+            while((index  < hardEndIndex) && (LCPVector.at(index) >= minimumMatchSize)){ //Determine end of run (Go Past end if match overlaps)
                 //For each match, partition by taking prefix of suffix
                 partitions = Determine_Partitions(seqStringVector[indexVector[index]]->substr(SAVector.at(index), LCPVector.at(index)),
                                                   LCPVector.at(index), minimumMatchSize, maximumMatchSize,

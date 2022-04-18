@@ -63,6 +63,7 @@ int main(int argc, const char *argv[]) {
     //CREATE SUFFIX ARRAY INDEX TO SEQUENCE MAPPING
     std::shared_ptr<std::vector<int>> indexVector = Determine_Index_Mapping(SAVector, seqRangeVector);
 
+
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;
     std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Matches_Parent(
