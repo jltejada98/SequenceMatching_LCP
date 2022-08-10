@@ -50,8 +50,6 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Match
                                  std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
                                  numSequences, std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
 //    Determine_Matches_Child(*threadMapVector[0], LCPVector, SAVector, indexVector, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, seqRangeVector, startIndex, endIndex);  //Single Threaded for Testing
-
-
     //Create subsequent threads
     for (i = 1; i < numSplits; ++i) {
         startIndex = endIndex;
