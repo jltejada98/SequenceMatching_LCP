@@ -66,7 +66,17 @@ int main(int argc, const char *argv[]) {
 
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;
-    std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Matches_Parent(
+//    std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Matches_Parent(
+//            LCPVector,
+//            SAVector,
+//            *indexVector,
+//            minimumMatchSize,
+//            maximumMatchSize,
+//            numSequences,
+//            seqStringVector,
+//            seqRangeVector);
+
+    std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Possible_Matches_Parent(
             LCPVector,
             SAVector,
             *indexVector,
@@ -75,6 +85,7 @@ int main(int argc, const char *argv[]) {
             numSequences,
             seqStringVector,
             seqRangeVector);
+
 
     //DETERMINE SIMILARITY METRICS
     std::cout << "Determining Similarity Metrics..." << std::endl;
@@ -86,7 +97,7 @@ int main(int argc, const char *argv[]) {
 
     //Write to outfile
     std::cout << "Writing Results..." << std::endl;
-    if(!Write_Matches(*matchesMap,*similarityMetricVector,numSequences, "Results_LCP.txt")){
+    if(!Write_Matches(*matchesMap,*similarityMetricVector,numSequences, "Results_LCP_Original.txt")){
         return EXIT_FAILURE;
     }
 

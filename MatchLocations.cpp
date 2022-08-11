@@ -44,3 +44,16 @@ void MatchLocations::mergeMatches(const std::shared_ptr<std::vector<std::unorder
     matchVectorToMerge->clear(); //After merging clear contents of merged set.
 }
 
+
+//Added new code to test
+void MatchLocations::InsertSeqIndex(int &seqIndex) {
+    uniqueSeqIndices.insert(seqIndex);
+}
+
+void MatchLocations::mergeSeqIndex(const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies) {
+    for (auto &mergeSeqIndex: *mergeSeqIndecies) { //Add the sequence indecies
+        uniqueSeqIndices.insert(mergeSeqIndex);
+    }
+}
+
+
