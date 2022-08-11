@@ -14,14 +14,12 @@ private:
     std::unordered_set<int> uniqueSeqIndices;
 public:
     explicit MatchLocations(int &numSequences);
-    void InsertSeqIndex(int &seqIndex);
     void InsertMatch(int SAIndex, int &seqIndex);
     int numSeqIncluded();
     std::shared_ptr<std::vector<std::unordered_set<int>>> getMatchVector();
     std::shared_ptr<std::unordered_set<int>> getUniqueSeqIndices();
     void mergeMatches(const std::shared_ptr<std::vector<std::unordered_set<int>>> &matchVectorToMerge,
                       const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies);
-    void mergeSeqIndex(const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies);
 };
 
 

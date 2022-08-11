@@ -124,12 +124,13 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
     size_t splitRemainder = SAVector.size() % numSplits; //Determine remainder, and add to first task.
     size_t startIndex = 0; //Guaranteed for LCP[0..numSequences] == 0 due to sentinel higher lexographical order (Only for 1st thread)
     size_t endIndex = splitSize + splitRemainder;
-    std::vector<std::shared_ptr<std::unordered_map<std::string, MatchLocations>>> threadMapVector;
+    std::vector<std::shared_ptr<std::unordered_map<std::string, MatchValidity>>> threadMapVector;
 
+    //First determine valid matches
     //Initialize Vector
     for (i = 0; i < numSplits; ++i) { //Check if works
-        std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = std::make_shared<std::unordered_map<std::string, MatchLocations>>();
-        threadMapVector.push_back(matchesMap);
+        std::shared_ptr<std::unordered_map<std::string, MatchValidity>> matchValidityMap = std::make_shared<std::unordered_map<std::string, MatchValidity>>();
+        threadMapVector.push_back(matchValidityMap);
     }
 
     //Create 1st Thread
@@ -162,20 +163,20 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
 
     std::cout << "Merging Match Threads" << std::endl;
 
-    //Merge matchesMap
-    std::unordered_map<std::string, MatchLocations> matchesMap;
+    //Merge parentMatchValidity
+    std::unordered_map<std::string, MatchValidity> parentMatchValidity;
     std::vector<std::string> matchesMapKeys;
 
     for (threadMapIndex = 0; threadMapIndex < numSplits; ++threadMapIndex) {
         std::cout << "Merging Thread: " << threadMapIndex << std::endl;
         for(auto &threadMapMatch: *threadMapVector.at(threadMapIndex)) { //For each match in threadMap
-            if(matchesMap.count(threadMapMatch.first)){ //If match already exists, add sequence indecies
-                matchesMap.at(threadMapMatch.first).mergeSeqIndex(threadMapMatch.second.getUniqueSeqIndices());
+            if(parentMatchValidity.count(threadMapMatch.first)){ //If match already exists, add sequence indecies
+                parentMatchValidity.at(threadMapMatch.first).mergeSeqIndex(threadMapMatch.second.getUniqueSeqIndices());
             }
             else{ //Create new pair and push to map
                 matchesMapKeys.push_back(threadMapMatch.first);
-                std::pair<std::string, MatchLocations> newMatchPair = std::make_pair(threadMapMatch.first, threadMapMatch.second);
-                matchesMap.insert(newMatchPair);
+                std::pair<std::string, MatchValidity> newMatchPair = std::make_pair(threadMapMatch.first, threadMapMatch.second);
+                parentMatchValidity.insert(newMatchPair);
             }
         }
         threadMapVector.at(threadMapIndex)->clear();
@@ -184,16 +185,16 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
     std::cout <<  "Removing non-qualifying matches" << std::endl;
     //Check if key has items from all sequences.
     for(auto & key: matchesMapKeys){
-        if(matchesMap.at(key).numSeqIncluded() < numSequences){
-            matchesMap.erase(key);
+        if(parentMatchValidity.at(key).numSeqIncluded() < numSequences){
+            parentMatchValidity.erase(key);
         }
     }
 
 
     //Use threads to determine locations of valid matches
     //Split length of matchesMapKeys for each thread
-    splitSize = matchesMap.size() / numSplits;
-    splitRemainder = matchesMap.size()  % numSplits; //Determine remainder, and add to first task.
+    splitSize = parentMatchValidity.size() / numSplits;
+    splitRemainder = parentMatchValidity.size() % numSplits; //Determine remainder, and add to first task.
     startIndex = 0;
     endIndex = splitSize + splitRemainder;
 
@@ -207,7 +208,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
 
 
 
-void Determine_Possible_Matches_Child(std::unordered_map<std::string, MatchLocations> &matchesMap, std::vector<int> &LCPVector,
+void Determine_Possible_Matches_Child(std::unordered_map<std::string, MatchValidity> &matchesMap, std::vector<int> &LCPVector,
                                       std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
                                       int maximumMatchSize, int numSequences, std::vector<std::shared_ptr<std::string>> &seqStringVector,
                                       std::vector<int> &seqRangeVector, size_t startIndex, size_t endIndex){
@@ -217,7 +218,7 @@ void Determine_Possible_Matches_Child(std::unordered_map<std::string, MatchLocat
     std::shared_ptr<std::string> newMatchString;
     std::vector<std::string> matchesMapKeys;
 
-    std::shared_ptr<MatchLocations> newMatchLocation;
+    std::shared_ptr<MatchValidity> newMatchValidity;
     std::shared_ptr<std::vector<std::shared_ptr<std::string>>> partitions;
     while(index < endIndex){
         if (LCPVector.at(index) >= minimumMatchSize){
@@ -234,10 +235,10 @@ void Determine_Possible_Matches_Child(std::unordered_map<std::string, MatchLocat
                         matchesMap.at(*partition).InsertSeqIndex(indexVector.at(index));
                     }
                     else{ //Create new possible match
-                        newMatchLocation = std::make_shared<MatchLocations>(numSequences);
-                        newMatchLocation->InsertSeqIndex(indexVector.at(index - 1));
-                        newMatchLocation->InsertSeqIndex(indexVector.at(index));
-                        std::pair<std::string, MatchLocations> newMatchPair = std::make_pair(*partition, *newMatchLocation);
+                        newMatchValidity = std::make_shared<MatchValidity>();
+                        newMatchValidity->InsertSeqIndex(indexVector.at(index - 1));
+                        newMatchValidity->InsertSeqIndex(indexVector.at(index));
+                        std::pair<std::string, MatchValidity> newMatchPair = std::make_pair(*partition, *newMatchValidity);
                         matchesMap.insert(newMatchPair);
                         matchesMapKeys.push_back(*partition);
                     }

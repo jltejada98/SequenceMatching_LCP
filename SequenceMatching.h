@@ -11,6 +11,7 @@
 #include <map>
 #include <iostream>
 
+#include "MatchValidity.h"
 #include "MatchLocations.h"
 
 std::shared_ptr<std::vector<int>> Determine_Index_Mapping(std::vector<int> &SAvector, std::vector<int> &seqRangeArray);
@@ -43,7 +44,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
         int maximumMatchSize, int numSequences, std::vector<std::shared_ptr<std::string>> &seqStringVector,
         std::vector<int> &seqRangeVector);
 
-void Determine_Possible_Matches_Child(std::unordered_map<std::string, MatchLocations> &matchesMap, std::vector<int> &LCPVector,
+void Determine_Possible_Matches_Child(std::unordered_map<std::string, MatchValidity> &matchesMap, std::vector<int> &LCPVector,
                                       std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
                                       int maximumMatchSize, int numSequences, std::vector<std::shared_ptr<std::string>> &seqStringVector,
                                       std::vector<int> &seqRangeVector, size_t startIndex, size_t endIndex);

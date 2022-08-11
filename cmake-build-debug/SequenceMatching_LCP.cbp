@@ -90,6 +90,12 @@
 		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchLocations.h">
 			<Option target="SequenceMatching_LCP"/>
 		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchValidity.cpp">
+			<Option target="SequenceMatching_LCP"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchValidity.h">
+			<Option target="SequenceMatching_LCP"/>
+		</Unit>
 		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/Sais.c">
 			<Option target="SequenceMatching_LCP"/>
 		</Unit>

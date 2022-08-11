@@ -177,6 +177,30 @@ MatchLocations.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.s
 .PHONY : MatchLocations.cpp.s
 
+MatchValidity.o: MatchValidity.cpp.o
+.PHONY : MatchValidity.o
+
+# target to build an object file
+MatchValidity.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/MatchValidity.cpp.o
+.PHONY : MatchValidity.cpp.o
+
+MatchValidity.i: MatchValidity.cpp.i
+.PHONY : MatchValidity.i
+
+# target to preprocess a source file
+MatchValidity.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/MatchValidity.cpp.i
+.PHONY : MatchValidity.cpp.i
+
+MatchValidity.s: MatchValidity.cpp.s
+.PHONY : MatchValidity.s
+
+# target to generate assembly for a file
+MatchValidity.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/MatchValidity.cpp.s
+.PHONY : MatchValidity.cpp.s
+
 Sais.o: Sais.c.o
 .PHONY : Sais.o
 
@@ -264,6 +288,9 @@ help:
 	@echo "... MatchLocations.o"
 	@echo "... MatchLocations.i"
 	@echo "... MatchLocations.s"
+	@echo "... MatchValidity.o"
+	@echo "... MatchValidity.i"
+	@echo "... MatchValidity.s"
 	@echo "... Sais.o"
 	@echo "... Sais.i"
 	@echo "... Sais.s"

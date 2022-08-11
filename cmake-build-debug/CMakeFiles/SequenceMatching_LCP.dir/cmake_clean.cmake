@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/SequenceMatching_LCP.dir/FileManipulation.cpp.o.d"
   "CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o"
   "CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o.d"
+  "CMakeFiles/SequenceMatching_LCP.dir/MatchValidity.cpp.o"
+  "CMakeFiles/SequenceMatching_LCP.dir/MatchValidity.cpp.o.d"
   "CMakeFiles/SequenceMatching_LCP.dir/Sais.c.o"
   "CMakeFiles/SequenceMatching_LCP.dir/Sais.c.o.d"
   "CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o"

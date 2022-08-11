@@ -11,4 +11,4 @@ add_executable(SequenceMatching_LCP main.cpp
         MatchLocations.cpp
         MatchLocations.h
         SequenceMatching.cpp
-        SequenceMatching.h)
+        SequenceMatching.h MatchValidity.cpp MatchValidity.h)
