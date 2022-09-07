@@ -46,7 +46,7 @@ bool Write_Matches(std::unordered_map<std::string, MatchLocations> &matchesMap,s
                    int &numSequences, const std::string &outFilename){
     std::ofstream File;
     File.exceptions(~::std::ios_base::goodbit);
-    std::vector<std::unordered_set<int>> matchIndicesVector;
+    std::vector<std::unordered_set<size_t>> matchIndicesVector;
 
     try{
         //Clear file before writting to file

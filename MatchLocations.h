@@ -10,16 +10,12 @@
 
 class MatchLocations {
 private:
-    std::vector<std::unordered_set<int>> matchVector; //Vec Pos: SeqIndex, Unordered set: SAIndex
-    std::unordered_set<int> uniqueSeqIndices;
+    std::vector<std::unordered_set<size_t>> matchVector; //Vec Pos: SeqIndex, Unordered set: SAIndex
 public:
     explicit MatchLocations(int &numSequences);
-    void InsertMatch(int SAIndex, int &seqIndex);
-    int numSeqIncluded();
-    std::shared_ptr<std::vector<std::unordered_set<int>>> getMatchVector();
-    std::shared_ptr<std::unordered_set<int>> getUniqueSeqIndices();
-    void mergeMatches(const std::shared_ptr<std::vector<std::unordered_set<int>>> &matchVectorToMerge,
-                      const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies);
+    void InsertMatch(size_t SAIndex, size_t &seqIndex);
+    std::shared_ptr<std::vector<std::unordered_set<size_t>>> getMatchVector();
+    void mergeMatches(const std::shared_ptr<std::vector<std::unordered_set<size_t>>> &matchVectorToMerge);
 };
 
 

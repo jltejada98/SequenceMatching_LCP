@@ -437,6 +437,7 @@ CMakeFiles/SequenceMatching_LCP.dir/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/thread \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/map \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/__tree \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/regex \
   /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/MatchValidity.h \
   /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/SuffixArray.hpp \
   /Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/Sais.h \
