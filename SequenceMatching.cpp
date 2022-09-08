@@ -57,47 +57,51 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
     //1. Remove invalid matches, by determining number of sequences present.//
     //////////////////////////////////////////////////////////////////////////
     //Initialize Vector
+
+    std::cout << "Determining Valid Matches..." << std::endl;
+
     for (i = 0; i < numSplits; ++i) {
         std::shared_ptr<std::unordered_map<std::string, MatchValidity>> matchValidityMap = std::make_shared<std::unordered_map<std::string, MatchValidity>>();
         validityThreadVector.push_back(matchValidityMap);
     }
 
     //Create 1st Thread
-//    threadArray[0] = std::thread(Determine_Valid_Matches_Child, std::ref(*validityThreadVector[0]), std::ref(LCPVector),
-//                                 std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
-//                                 std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
+    std::cout << "Creating Validity Thread: 0" << std::endl;
+    threadArray[0] = std::thread(Determine_Valid_Matches_Child, std::ref(*validityThreadVector[0]), std::ref(LCPVector),
+                                 std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
+                                 std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
 
-    Determine_Valid_Matches_Child(*validityThreadVector[0], LCPVector, SAVector, indexVector, minimumMatchSize,
-                                  maximumMatchSize, seqStringVector, seqRangeVector, startIndex,
-                                  endIndex);  //Single Threaded for Testing
+//    Determine_Valid_Matches_Child(*validityThreadVector[0], LCPVector, SAVector, indexVector, minimumMatchSize,
+//                                  maximumMatchSize, seqStringVector, seqRangeVector, startIndex,
+//                                  endIndex);  //Single Threaded for Testing
 
     //Create subsequent threads
     for (i = 1; i < numSplits; ++i) {
         startIndex = endIndex;
         endIndex = startIndex+splitSize;
-//        threadArray[i] = std::thread(Determine_Valid_Matches_Child, std::ref(*validityThreadVector[i]), std::ref(LCPVector),
-//                                     std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
-//                                     std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
-        Determine_Valid_Matches_Child(*validityThreadVector[i], LCPVector, SAVector, indexVector, minimumMatchSize,
-                                      maximumMatchSize, seqStringVector, seqRangeVector, startIndex,
-                                      endIndex); //Single Threaded for Testing
+        std::cout << "Creating Validity Thread: "<< i << std::endl;
+        threadArray[i] = std::thread(Determine_Valid_Matches_Child, std::ref(*validityThreadVector[i]), std::ref(LCPVector),
+                                     std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
+                                     std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
+//        Determine_Valid_Matches_Child(*validityThreadVector[i], LCPVector, SAVector, indexVector, minimumMatchSize,
+//                                      maximumMatchSize, seqStringVector, seqRangeVector, startIndex,
+//                                      endIndex); //Single Threaded for Testing
     }
 
 
     //Wait for all threads to complete
-//    for (i=0; i<numSplits; i++){
-//        threadArray[i].join();
-//    }
+    for (i=0; i<numSplits; i++){
+        threadArray[i].join();
+    }
 
-
-    std::cout << "Merging Match Threads" << std::endl;
+    std::cout << "Finished Determining Valid Matches." << std::endl;
 
     //Merge all thread validity maps into parentMatchValidity
     std::unordered_map<std::string, MatchValidity> parentMatchValidity;
     std::vector<std::string> keysToCheckValidity;
 
     for (threadMapIndex = 0; threadMapIndex < numSplits; ++threadMapIndex) {
-        std::cout << "Merging Thread: " << threadMapIndex << std::endl;
+        std::cout << "Merging Validity Thread: " << threadMapIndex << std::endl;
         for(auto &threadMapMatch: *validityThreadVector[threadMapIndex]) { //For each match in threadMap
             if(parentMatchValidity.count(threadMapMatch.first)){ //If match already exists, add sequence indecies
                 parentMatchValidity[threadMapMatch.first].mergeSeqIndex(threadMapMatch.second.getUniqueSeqIndices());
@@ -112,7 +116,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
     }
     validityThreadVector.clear();
 
-    std::cout <<  "Removing invalid matches" << std::endl;
+    std::cout <<  "Removing invalid matches..." << std::endl;
     //Check if key has items from all sequences.
     std::vector<std::string> validMatches; //Contains valid matches to be used in splitting matches
     for(auto & key: keysToCheckValidity){
@@ -136,6 +140,8 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
 
     std::vector<std::shared_ptr<std::unordered_map<std::string, MatchLocations>>> threadMapVector;
 
+    std::cout << "Determining Match Locations" << std::endl;
+
     //Initialize Vector
     for (i = 0; i < numSplits; ++i) {
         std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchLocationMap = std::make_shared<std::unordered_map<std::string, MatchLocations>>(numSequences);
@@ -143,29 +149,36 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
     }
 
     //Create 1st Thread
-//    threadArray[0] = std::thread(Determine_Match_Locations_Child, std::ref())
+    std::cout << "Creating Location Thread: 0" << std::endl;
+    threadArray[0] = std::thread(Determine_Match_Locations_Child, std::ref(*threadMapVector[0]),
+                                 std::ref(validMatches), std::ref(indexVector), std::ref(seqStringVector),
+                                 numSequences,startIndex, endIndex);
 
-    Determine_Match_Locations_Child(*threadMapVector[0],validMatches,indexVector,seqStringVector,numSequences,startIndex, endIndex);
+//    Determine_Match_Locations_Child(*threadMapVector[0],validMatches,indexVector,seqStringVector,numSequences,startIndex, endIndex); //Single Threaded for Testing
 
     //Create subsequent threads
     for (i = 1; i < numSplits; ++i) {
         startIndex = endIndex;
         endIndex = startIndex + splitSize;
-        Determine_Match_Locations_Child(*threadMapVector[i],validMatches,indexVector,seqStringVector,numSequences,startIndex, endIndex);
+        std::cout << "Creating Location Thread: " << i << std::endl;
+        threadArray[i] = std::thread(Determine_Match_Locations_Child, std::ref(*threadMapVector[i]),
+                                     std::ref(validMatches), std::ref(indexVector), std::ref(seqStringVector),
+                                     numSequences,startIndex, endIndex);
 
-        //threadArray[i] = ...
-
+//        Determine_Match_Locations_Child(*threadMapVector[i],validMatches,indexVector,seqStringVector,numSequences,startIndex, endIndex); //Single Threaded for Testing
     }
 
-
     //Wait for all threads to complete
-//    for (i=0; i<numSplits; i++){
-//        threadArray[i].join();
-//    }
+    for (i=0; i<numSplits; i++){
+        threadArray[i].join();
+    }
 
-    //Merge all thread match locations into parent match location map (In this case we arel using the map stored in
+    std::cout << "Finished Determining Match Locations." << std::endl;
+
+    //Merge all thread match locations into parent match location map (In this case we are using the map stored in
     //threadMapVector[0] as the parent to avoid re-allocation of memory
     for (i = 1; i < numSplits; ++i) {
+        std::cout << "Merging Match Locations: " << i-1 << std::endl;
         threadMapVector[0]->insert(threadMapVector[i]->begin(), threadMapVector[i]->end());
         threadMapVector[i]->clear();
     }
@@ -252,7 +265,7 @@ void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocati
 
     while(matchesMapIndex < endIndex){ //Iterate through all matches in partition
         matchString = validMatches[matchesMapIndex];
-        regexKey = std::regex("(?=(" + matchString + "))."); //Added positive lookahead to find overlapping matches.
+        regexKey = std::regex("(?=(" + matchString + "))."); //Added positive lookahead to find overlapping matchStrings.
         newMatchLocations = std::make_shared<MatchLocations>(numSequences);
         auto newMatchPair = std::make_pair(matchString, *newMatchLocations);
         matchesMap.insert(newMatchPair);
