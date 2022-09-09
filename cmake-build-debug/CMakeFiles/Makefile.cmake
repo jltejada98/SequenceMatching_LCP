@@ -22,6 +22,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/Clang.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Compiler/GNU.cmake"
+  "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/FindBoost.cmake"
+  "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/FindPackageHandleStandardArgs.cmake"
+  "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/FindPackageMessage.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-AppleClang-C.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-AppleClang-CXX.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.23/Modules/Platform/Apple-Clang-C.cmake"
@@ -35,6 +38,10 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.23.2/CMakeCCompiler.cmake"
   "CMakeFiles/3.23.2/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.23.2/CMakeSystem.cmake"
+  "/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/Boost-1.79.0/BoostConfig.cmake"
+  "/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/Boost-1.79.0/BoostConfigVersion.cmake"
+  "/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_headers-1.79.0/boost_headers-config-version.cmake"
+  "/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_headers-1.79.0/boost_headers-config.cmake"
   )
 
 # The corresponding makefile is:

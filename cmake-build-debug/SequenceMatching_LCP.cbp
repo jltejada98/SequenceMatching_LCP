@@ -5,7 +5,7 @@
 		<Option title="SequenceMatching_LCP"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\opt\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\boost\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\boost\1.79.0_2\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\boost\1.79.0_2\lib\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\boost\1.79.0_2\lib\cmake\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\boost\1.79.0_2\lib\cmake\Boost-1.79.0\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\boost\1.79.0_2\lib\cmake\boost_headers-1.79.0\;"/>
 		<Build>
 			<Target title="all">
 				<Option working_dir="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug"/>
@@ -24,6 +24,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/opt/homebrew/Cellar/boost/1.79.0_2/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
@@ -44,6 +45,7 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/opt/homebrew/Cellar/boost/1.79.0_2/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
@@ -113,6 +115,18 @@
 		</Unit>
 		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/../../../../../../../opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/Boost-1.79.0/BoostConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\boost\1.79.0_2\lib\cmake\Boost-1.79.0\"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/../../../../../../../opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/Boost-1.79.0/BoostConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\boost\1.79.0_2\lib\cmake\Boost-1.79.0\"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/../../../../../../../opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_headers-1.79.0/boost_headers-config-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\boost\1.79.0_2\lib\cmake\boost_headers-1.79.0\"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/../../../../../../../opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_headers-1.79.0/boost_headers-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\opt\homebrew\Cellar\boost\1.79.0_2\lib\cmake\boost_headers-1.79.0\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

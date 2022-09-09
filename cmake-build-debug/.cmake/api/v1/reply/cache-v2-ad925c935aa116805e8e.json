@@ -2,6 +2,18 @@
 	"entries" : 
 	[
 		{
+			"name" : "Boo_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "The directory containing a CMake configuration file for Boo."
+				}
+			],
+			"type" : "PATH",
+			"value" : "Boo_DIR-NOTFOUND"
+		},
+		{
 			"name" : "Boost_DIR",
 			"properties" : 
 			[
@@ -15,7 +27,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/lib/cmake/Boost-1.79.0"
+			"value" : "/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/Boost-1.79.0"
 		},
 		{
 			"name" : "Boost_FILESYSTEM_LIBRARY_RELEASE",
@@ -27,19 +39,23 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "/opt/homebrew/lib/libboost_filesystem-mt.dylib"
+			"value" : "/opt/homebrew/Cellar/boost/1.79.0_2/lib/libboost_filesystem-mt.dylib"
 		},
 		{
 			"name" : "Boost_INCLUDE_DIR",
 			"properties" : 
 			[
 				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
 					"name" : "HELPSTRING",
 					"value" : "Path to a file."
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/include"
+			"value" : "/opt/homebrew/Caskroom/miniforge/base/envs/SequenceMatching_LCP_boost/include"
 		},
 		{
 			"name" : "Boost_SYSTEM_LIBRARY_RELEASE",
@@ -51,7 +67,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "/opt/homebrew/lib/libboost_system-mt.dylib"
+			"value" : "/opt/homebrew/Cellar/boost/1.79.0_2/lib/libboost_system-mt.dylib"
 		},
 		{
 			"name" : "CMAKE_ADDR2LINE",
@@ -1243,7 +1259,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "[/opt/homebrew/lib/cmake/Boost-1.79.0/BoostConfig.cmake][c ][v1.79.0()]"
+			"value" : "[/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/Boost-1.79.0/BoostConfig.cmake][c ][v1.79.0(1.79.0)]"
 		},
 		{
 			"name" : "ProcessorCount_cmd_sysctl",
@@ -1298,16 +1314,88 @@
 			"value" : "/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP"
 		},
 		{
-			"name" : "boost_$COMPS$_DIR",
+			"name" : "_BOOST_INCLUDEDIR_LAST",
 			"properties" : 
 			[
 				{
 					"name" : "HELPSTRING",
-					"value" : "The directory containing a CMake configuration file for boost_$COMPS$."
+					"value" : "Last used BOOST_INCLUDEDIR value."
 				}
 			],
-			"type" : "PATH",
-			"value" : "boost_$COMPS$_DIR-NOTFOUND"
+			"type" : "INTERNAL",
+			"value" : "/opt/homebrew/Cellar/boost/1.79.0_2/include"
+		},
+		{
+			"name" : "_BOOST_LIBRARYDIR_LAST",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Last used BOOST_LIBRARYDIR value."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "/opt/homebrew/Cellar/boost/1.79.0_2/lib"
+		},
+		{
+			"name" : "_BOOST_ROOT_LAST",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Last used BOOST_ROOT value."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "/opt/homebrew/Cellar/boost/1.79.0_2"
+		},
+		{
+			"name" : "_Boost_COMPONENTS_SEARCHED",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Components requested for this build tree."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
+		},
+		{
+			"name" : "_Boost_INCLUDE_DIR_LAST",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Last used Boost_INCLUDE_DIR value."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "Boost_INCLUDE_DIR-NOTFOUND"
+		},
+		{
+			"name" : "_Boost_NAMESPACE_LAST",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Last used Boost_NAMESPACE value."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "boost"
+		},
+		{
+			"name" : "_Boost_USE_MULTITHREADED_LAST",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Last used Boost_USE_MULTITHREADED value."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "TRUE"
 		},
 		{
 			"name" : "boost_atomic_DIR",
@@ -1323,7 +1411,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/lib/cmake/boost_atomic-1.79.0"
+			"value" : "/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_atomic-1.79.0"
 		},
 		{
 			"name" : "boost_filesystem_DIR",
@@ -1339,7 +1427,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/lib/cmake/boost_filesystem-1.79.0"
+			"value" : "/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_filesystem-1.79.0"
 		},
 		{
 			"name" : "boost_headers_DIR",
@@ -1355,7 +1443,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/lib/cmake/boost_headers-1.79.0"
+			"value" : "/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_headers-1.79.0"
 		},
 		{
 			"name" : "boost_system_DIR",
@@ -1371,7 +1459,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "/opt/homebrew/lib/cmake/boost_system-1.79.0"
+			"value" : "/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_system-1.79.0"
 		}
 	],
 	"kind" : "cache",

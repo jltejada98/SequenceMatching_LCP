@@ -14,6 +14,19 @@
 # EXTERNAL cache entries
 ########################
 
+//The directory containing a CMake configuration file for Boo.
+Boo_DIR:PATH=Boo_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for Boost.
+Boost_DIR:PATH=/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/Boost-1.79.0
+
+Boost_FILESYSTEM_LIBRARY_RELEASE:STRING=/opt/homebrew/Cellar/boost/1.79.0_2/lib/libboost_filesystem-mt.dylib
+
+//Path to a file.
+Boost_INCLUDE_DIR:PATH=/opt/homebrew/Caskroom/miniforge/base/envs/SequenceMatching_LCP_boost/include
+
+Boost_SYSTEM_LIBRARY_RELEASE:STRING=/opt/homebrew/Cellar/boost/1.79.0_2/lib/libboost_system-mt.dylib
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=CMAKE_ADDR2LINE-NOTFOUND
 
@@ -230,11 +243,27 @@ SequenceMatching_LCP_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 SequenceMatching_LCP_SOURCE_DIR:STATIC=/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP
 
+//The directory containing a CMake configuration file for boost_atomic.
+boost_atomic_DIR:PATH=/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_atomic-1.79.0
+
+//The directory containing a CMake configuration file for boost_filesystem.
+boost_filesystem_DIR:PATH=/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_filesystem-1.79.0
+
+//The directory containing a CMake configuration file for boost_headers.
+boost_headers_DIR:PATH=/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_headers-1.79.0
+
+//The directory containing a CMake configuration file for boost_system.
+boost_system_DIR:PATH=/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/boost_system-1.79.0
+
 
 ########################
 # INTERNAL cache entries
 ########################
 
+//ADVANCED property for variable: Boost_DIR
+Boost_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: Boost_INCLUDE_DIR
+Boost_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ADDR2LINE
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
@@ -378,6 +407,30 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding Boost
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/opt/homebrew/Cellar/boost/1.79.0_2/lib/cmake/Boost-1.79.0/BoostConfig.cmake][c ][v1.79.0(1.79.0)]
 //ADVANCED property for variable: ProcessorCount_cmd_sysctl
 ProcessorCount_cmd_sysctl-ADVANCED:INTERNAL=1
+//Last used BOOST_INCLUDEDIR value.
+_BOOST_INCLUDEDIR_LAST:INTERNAL=/opt/homebrew/Cellar/boost/1.79.0_2/include
+//Last used BOOST_LIBRARYDIR value.
+_BOOST_LIBRARYDIR_LAST:INTERNAL=/opt/homebrew/Cellar/boost/1.79.0_2/lib
+//Last used BOOST_ROOT value.
+_BOOST_ROOT_LAST:INTERNAL=/opt/homebrew/Cellar/boost/1.79.0_2
+//Components requested for this build tree.
+_Boost_COMPONENTS_SEARCHED:INTERNAL=
+//Last used Boost_INCLUDE_DIR value.
+_Boost_INCLUDE_DIR_LAST:INTERNAL=Boost_INCLUDE_DIR-NOTFOUND
+//Last used Boost_NAMESPACE value.
+_Boost_NAMESPACE_LAST:INTERNAL=boost
+//Last used Boost_USE_MULTITHREADED value.
+_Boost_USE_MULTITHREADED_LAST:INTERNAL=TRUE
+//ADVANCED property for variable: boost_atomic_DIR
+boost_atomic_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_filesystem_DIR
+boost_filesystem_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_headers_DIR
+boost_headers_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_system_DIR
+boost_system_DIR-ADVANCED:INTERNAL=1
 

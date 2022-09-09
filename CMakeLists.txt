@@ -4,7 +4,11 @@ project(SequenceMatching_LCP)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(SequenceMatching_LCP main.cpp
+find_package(Boost 1.79.0)
+include_directories(${Boost_INCLUDE_DIRS})
+
+add_executable(SequenceMatching_LCP
+        main.cpp
         Sais.c
         FileManipulation.cpp
         FileManipulation.h
@@ -14,3 +18,6 @@ add_executable(SequenceMatching_LCP main.cpp
         SequenceMatching.h
         MatchValidity.cpp
         MatchValidity.h)
+
+target_link_libraries(SequenceMatching_LCP ${Boost_LIBRARIES})
+
