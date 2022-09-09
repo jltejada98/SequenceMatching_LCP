@@ -7,13 +7,13 @@
 
 #include <fstream>
 #include <iostream>
-#include <unordered_map>
-#include <unordered_set>
+#include <boost/unordered_map.hpp>
+#include <boost/unordered_set.hpp>
 #include "MatchLocations.h"
 
 std::shared_ptr<std::string> Load_Sequence(const char *filename);
 std::shared_ptr<std::string> Combine_Sequences(const std::vector<std::shared_ptr<std::string>> &seqStringArray, int numSequences);
-bool Write_Matches(std::unordered_map<std::string, MatchLocations> &matchesMap,std::vector<double> &similarityMetrics,
+bool Write_Matches(boost::unordered_map<std::string, MatchLocations> &matchesMap,std::vector<double> &similarityMetrics,
                    int &numSequences, const std::string& outFilename);
 
 

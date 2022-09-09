@@ -5,7 +5,7 @@
 #include "LCPArrayKasai.hpp"
 #include <iostream>
 #include <vector>
-#include <unordered_map>
+#include <boost/unordered_map.hpp>
 
 int main(int argc, const char *argv[]) {
     //CHECK ARGUMENTS
@@ -67,7 +67,7 @@ int main(int argc, const char *argv[]) {
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;
 
-    std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Possible_Matches_Parent(
+    std::shared_ptr<boost::unordered_map<std::string, MatchLocations>> matchesMap = Determine_Possible_Matches_Parent(
             LCPVector,
             SAVector,
             *indexVector,

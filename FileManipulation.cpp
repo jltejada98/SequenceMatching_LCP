@@ -42,11 +42,11 @@ std::shared_ptr<std::string> Combine_Sequences(const std::vector<std::shared_ptr
     return std::make_shared<std::string>(combinedString);
 }
 
-bool Write_Matches(std::unordered_map<std::string, MatchLocations> &matchesMap,std::vector<double> &similarityMetrics,
+bool Write_Matches(boost::unordered_map<std::string, MatchLocations> &matchesMap,std::vector<double> &similarityMetrics,
                    int &numSequences, const std::string &outFilename){
     std::ofstream File;
     File.exceptions(~::std::ios_base::goodbit);
-    std::vector<std::unordered_set<size_t>> matchIndicesVector;
+    std::vector<boost::unordered_set<size_t>> matchIndicesVector;
 
     try{
         //Clear file before writting to file

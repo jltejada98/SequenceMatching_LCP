@@ -17,13 +17,13 @@ void MatchValidity::InsertSeqIndex(int &seqIndex) {
     uniqueSeqIndices.insert(seqIndex);
 }
 
-void MatchValidity::mergeSeqIndex(const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies) {
+void MatchValidity::mergeSeqIndex(const std::shared_ptr<boost::unordered_set<int>> &mergeSeqIndecies) {
     for (auto &mergeSeqIndex: *mergeSeqIndecies) { //Add the sequence indecies
         uniqueSeqIndices.insert(mergeSeqIndex);
     }
 }
 
-std::shared_ptr<std::unordered_set<int>> MatchValidity::getUniqueSeqIndices() {
-    return std::make_shared<std::unordered_set<int>>(uniqueSeqIndices);
+std::shared_ptr<boost::unordered_set<int>> MatchValidity::getUniqueSeqIndices() {
+    return std::make_shared<boost::unordered_set<int>>(uniqueSeqIndices);
 }
 

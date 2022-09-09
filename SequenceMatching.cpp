@@ -37,7 +37,7 @@ std::shared_ptr<std::vector<int>> Determine_Index_Mapping(std::vector<int> &SAve
 //   match and store their indecies.
 
 
-std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possible_Matches_Parent(
+std::shared_ptr<boost::unordered_map<std::string, MatchLocations>> Determine_Possible_Matches_Parent(
         std::vector<int> &LCPVector, std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
         int maximumMatchSize, int numSequences, std::vector<std::shared_ptr<std::string>> &seqStringVector,
         std::vector<int> &seqRangeVector){
@@ -50,7 +50,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
     size_t splitRemainder = SAVector.size() % numSplits; //Determine remainder, and add to first task.
     size_t startIndex = 0; //Guaranteed for LCP[0..numSequences] == 0 due to sentinel higher lexographical order (Only for 1st thread)
     size_t endIndex = splitSize + splitRemainder;
-    std::vector<std::shared_ptr<std::unordered_map<std::string, MatchValidity>>> validityThreadVector;
+    std::vector<std::shared_ptr<boost::unordered_map<std::string, MatchValidity>>> validityThreadVector;
 
     //Todo change print messages
     //////////////////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
     std::cout << "Determining Valid Matches..." << std::endl;
 
     for (i = 0; i < numSplits; ++i) {
-        std::shared_ptr<std::unordered_map<std::string, MatchValidity>> matchValidityMap = std::make_shared<std::unordered_map<std::string, MatchValidity>>();
+        std::shared_ptr<boost::unordered_map<std::string, MatchValidity>> matchValidityMap = std::make_shared<boost::unordered_map<std::string, MatchValidity>>();
         validityThreadVector.push_back(matchValidityMap);
     }
 
@@ -97,7 +97,7 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
     std::cout << "Finished Determining Valid Matches." << std::endl;
 
     //Merge all thread validity maps into parentMatchValidity
-    std::unordered_map<std::string, MatchValidity> parentMatchValidity;
+    boost::unordered_map<std::string, MatchValidity> parentMatchValidity;
     std::vector<std::string> keysToCheckValidity;
 
     for (threadMapIndex = 0; threadMapIndex < numSplits; ++threadMapIndex) {
@@ -138,13 +138,13 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
     startIndex = 0;
     endIndex = splitSize + splitRemainder;
 
-    std::vector<std::shared_ptr<std::unordered_map<std::string, MatchLocations>>> threadMapVector;
+    std::vector<std::shared_ptr<boost::unordered_map<std::string, MatchLocations>>> threadMapVector;
 
     std::cout << "Determining Match Locations" << std::endl;
 
     //Initialize Vector
     for (i = 0; i < numSplits; ++i) {
-        std::shared_ptr<std::unordered_map<std::string, MatchLocations>> matchLocationMap = std::make_shared<std::unordered_map<std::string, MatchLocations>>(numSequences);
+        std::shared_ptr<boost::unordered_map<std::string, MatchLocations>> matchLocationMap = std::make_shared<boost::unordered_map<std::string, MatchLocations>>(numSequences);
         threadMapVector.push_back(matchLocationMap);
     }
 
@@ -188,13 +188,13 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
 
 
 void
-Determine_Valid_Matches_Child(std::unordered_map<std::string, MatchValidity> &matchesMap, std::vector<int> &LCPVector,
+Determine_Valid_Matches_Child(boost::unordered_map<std::string, MatchValidity> &matchesMap, std::vector<int> &LCPVector,
                               std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
                               int maximumMatchSize, std::vector<std::shared_ptr<std::string>> &seqStringVector,
                               std::vector<int> &seqRangeVector, size_t startIndex, size_t endIndex) {
     size_t index = startIndex;
     size_t hardEndIndex = SAVector.size();
-    std::shared_ptr<std::vector<std::unordered_set<int>>> matchVector;
+    std::shared_ptr<std::vector<boost::unordered_set<int>>> matchVector;
     std::shared_ptr<std::string> newMatchString;
     std::vector<std::string> matchesMapKeys;
 
@@ -250,28 +250,28 @@ Determine_StringPartitions(const std::string &key, const int &keyLen, const int 
 }
 
 
-void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocations> &matchesMap,
+void Determine_Match_Locations_Child(boost::unordered_map<std::string, MatchLocations> &matchesMap,
                                      std::vector<std::string> &validMatches, std::vector<int> &indexVector,
                                      std::vector<std::shared_ptr<std::string>> &seqStringVector, int numSequences,
                                      size_t startIndex, size_t endIndex) {
     std::string matchString;
     size_t foundAtIndex;
     size_t matchesMapIndex = startIndex;
-    std::regex regexKey;
-    std::sregex_iterator foundIterator;
-    auto regexEnd = std::sregex_iterator();
+    boost::regex regexKey;
+    boost::sregex_iterator foundIterator;
+    auto regexEnd = boost::sregex_iterator();
 
     std::shared_ptr<MatchLocations> newMatchLocations;
 
     while(matchesMapIndex < endIndex){ //Iterate through all matches in partition
         matchString = validMatches[matchesMapIndex];
-        regexKey = std::regex("(?=(" + matchString + "))."); //Added positive lookahead to find overlapping matchStrings.
+        regexKey = boost::regex("(?=(" + matchString + "))."); //Added positive lookahead to find overlapping matchStrings.
         newMatchLocations = std::make_shared<MatchLocations>(numSequences);
         auto newMatchPair = std::make_pair(matchString, *newMatchLocations);
         matchesMap.insert(newMatchPair);
         for (size_t seqIndex = 0; seqIndex < numSequences; ++seqIndex) { //For each sequence in query, determine instances of match
-            foundIterator = std::sregex_iterator(seqStringVector[seqIndex]->begin(), seqStringVector[seqIndex]->end(), regexKey);
-            for(std::sregex_iterator i = foundIterator; i != regexEnd; i++){
+            foundIterator = boost::sregex_iterator(seqStringVector[seqIndex]->begin(), seqStringVector[seqIndex]->end(), regexKey);
+            for(boost::sregex_iterator i = foundIterator; i != regexEnd; i++){
                 foundAtIndex = i->position();
                 matchesMap.at(matchString).InsertMatch(foundAtIndex,seqIndex);
             }
@@ -286,7 +286,7 @@ void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocati
 
 
 std::shared_ptr<std::vector<double>>
-Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &matchesMap, std::string &seqStringCombined,
+Determine_SimilarityMetrics(boost::unordered_map<std::string, MatchLocations> &matchesMap, std::string &seqStringCombined,
                             std::vector<std::shared_ptr<std::string>> &seqStringVector,
                             std::vector<int> &seqRangeVector, int &numSequences) {
     int seqIndex;
@@ -294,10 +294,10 @@ Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &mat
     size_t matchIndices;
     int overallCoverageSize = 0;
     std::vector<double> similarityMetricVector;
-    std::vector<std::unordered_set<size_t>> matchVector;
-    std::vector<std::unordered_set<size_t>> matchCoverageVector;
+    std::vector<boost::unordered_set<size_t>> matchVector;
+    std::vector<boost::unordered_set<size_t>> matchCoverageVector;
     for (seqIndex = 0; seqIndex < numSequences; ++seqIndex) {
-        matchCoverageVector.emplace_back(std::unordered_set<size_t>());
+        matchCoverageVector.emplace_back(boost::unordered_set<size_t>());
     }
 
     for(auto &match: matchesMap){
