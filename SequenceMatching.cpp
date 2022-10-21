@@ -3,6 +3,8 @@
 //
 
 #include "SequenceMatching.h"
+#include "boost/xpressive/xpressive.hpp"
+
 
 std::shared_ptr<std::vector<int>> Determine_Index_Mapping(std::vector<int> &SAvector, std::vector<int> &seqRangeArray){
     //Determines mapping between SA index and sequence it belongs to.
@@ -257,18 +259,23 @@ void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocati
     std::string matchString;
     size_t foundAtIndex;
     size_t matchesMapIndex = startIndex;
-    std::regex regexKey;
-    std::sregex_iterator foundIterator;
-    auto regexEnd = std::sregex_iterator();
+    boost::xpressive::sregex regexKey;
+    boost::xpressive::sregex_iterator foundIterator();
+
+
+
 
     std::shared_ptr<MatchLocations> newMatchLocations;
 
     while(matchesMapIndex < endIndex){ //Iterate through all matches in partition
         matchString = validMatches[matchesMapIndex];
-        regexKey = std::regex("(?=(" + matchString + "))."); //Added positive lookahead to find overlapping matchStrings.
+        regexKey = boost::xpressive::sregex::compile("(?=(" + matchString + ").)"); //Added positive lookahead to find overlapping matchStrings.
         newMatchLocations = std::make_shared<MatchLocations>(numSequences);
         auto newMatchPair = std::make_pair(matchString, *newMatchLocations);
         matchesMap.insert(newMatchPair);
+
+
+
         for (size_t seqIndex = 0; seqIndex < numSequences; ++seqIndex) { //For each sequence in query, determine instances of match
             foundIterator = std::sregex_iterator(seqStringVector[seqIndex]->begin(), seqStringVector[seqIndex]->end(), regexKey);
             for(std::sregex_iterator i = foundIterator; i != regexEnd; i++){

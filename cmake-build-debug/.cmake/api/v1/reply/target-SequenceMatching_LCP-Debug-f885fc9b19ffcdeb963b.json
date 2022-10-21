@@ -10,7 +10,8 @@
 	{
 		"commands" : 
 		[
-			"add_executable"
+			"add_executable",
+			"include_directories"
 		],
 		"files" : 
 		[
@@ -23,6 +24,12 @@
 			},
 			{
 				"command" : 0,
+				"file" : 0,
+				"line" : 10,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
 				"file" : 0,
 				"line" : 7,
 				"parent" : 0
@@ -39,6 +46,13 @@
 				},
 				{
 					"fragment" : "-std=gnu++11"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 2,
+					"path" : "/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/boost"
 				}
 			],
 			"language" : "CXX",
@@ -67,6 +81,13 @@
 				},
 				{
 					"fragment" : "-std=gnu99"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 2,
+					"path" : "/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/boost"
 				}
 			],
 			"language" : "C",

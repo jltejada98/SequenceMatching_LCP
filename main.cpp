@@ -87,7 +87,7 @@ int main(int argc, const char *argv[]) {
                                                                                               numSequences);
     //Write to outfile
     std::cout << "Writing Results..." << std::endl;
-    if(!Write_Matches(*matchesMap,*similarityMetricVector,numSequences, "Results.txt")){
+    if(!Write_Matches(*matchesMap,*similarityMetricVector,numSequences, "Results_LCP1.txt")){
         return EXIT_FAILURE;
     }
 
