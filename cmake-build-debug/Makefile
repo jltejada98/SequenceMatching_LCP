@@ -117,6 +117,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named re2
+
+# Build rule for target.
+re2: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 re2
+.PHONY : re2
+
+# fast build rule for target.
+re2/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/build
+.PHONY : re2/fast
+
+#=============================================================================
 # Target rules for targets named SequenceMatching_LCP
 
 # Build rule for target.
@@ -273,6 +286,534 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SequenceMatching_LCP.dir/build.make CMakeFiles/SequenceMatching_LCP.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+re2/bitstate.o: re2/bitstate.cc.o
+.PHONY : re2/bitstate.o
+
+# target to build an object file
+re2/bitstate.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/bitstate.cc.o
+.PHONY : re2/bitstate.cc.o
+
+re2/bitstate.i: re2/bitstate.cc.i
+.PHONY : re2/bitstate.i
+
+# target to preprocess a source file
+re2/bitstate.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/bitstate.cc.i
+.PHONY : re2/bitstate.cc.i
+
+re2/bitstate.s: re2/bitstate.cc.s
+.PHONY : re2/bitstate.s
+
+# target to generate assembly for a file
+re2/bitstate.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/bitstate.cc.s
+.PHONY : re2/bitstate.cc.s
+
+re2/compile.o: re2/compile.cc.o
+.PHONY : re2/compile.o
+
+# target to build an object file
+re2/compile.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/compile.cc.o
+.PHONY : re2/compile.cc.o
+
+re2/compile.i: re2/compile.cc.i
+.PHONY : re2/compile.i
+
+# target to preprocess a source file
+re2/compile.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/compile.cc.i
+.PHONY : re2/compile.cc.i
+
+re2/compile.s: re2/compile.cc.s
+.PHONY : re2/compile.s
+
+# target to generate assembly for a file
+re2/compile.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/compile.cc.s
+.PHONY : re2/compile.cc.s
+
+re2/dfa.o: re2/dfa.cc.o
+.PHONY : re2/dfa.o
+
+# target to build an object file
+re2/dfa.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/dfa.cc.o
+.PHONY : re2/dfa.cc.o
+
+re2/dfa.i: re2/dfa.cc.i
+.PHONY : re2/dfa.i
+
+# target to preprocess a source file
+re2/dfa.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/dfa.cc.i
+.PHONY : re2/dfa.cc.i
+
+re2/dfa.s: re2/dfa.cc.s
+.PHONY : re2/dfa.s
+
+# target to generate assembly for a file
+re2/dfa.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/dfa.cc.s
+.PHONY : re2/dfa.cc.s
+
+re2/filtered_re2.o: re2/filtered_re2.cc.o
+.PHONY : re2/filtered_re2.o
+
+# target to build an object file
+re2/filtered_re2.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/filtered_re2.cc.o
+.PHONY : re2/filtered_re2.cc.o
+
+re2/filtered_re2.i: re2/filtered_re2.cc.i
+.PHONY : re2/filtered_re2.i
+
+# target to preprocess a source file
+re2/filtered_re2.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/filtered_re2.cc.i
+.PHONY : re2/filtered_re2.cc.i
+
+re2/filtered_re2.s: re2/filtered_re2.cc.s
+.PHONY : re2/filtered_re2.s
+
+# target to generate assembly for a file
+re2/filtered_re2.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/filtered_re2.cc.s
+.PHONY : re2/filtered_re2.cc.s
+
+re2/mimics_pcre.o: re2/mimics_pcre.cc.o
+.PHONY : re2/mimics_pcre.o
+
+# target to build an object file
+re2/mimics_pcre.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/mimics_pcre.cc.o
+.PHONY : re2/mimics_pcre.cc.o
+
+re2/mimics_pcre.i: re2/mimics_pcre.cc.i
+.PHONY : re2/mimics_pcre.i
+
+# target to preprocess a source file
+re2/mimics_pcre.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/mimics_pcre.cc.i
+.PHONY : re2/mimics_pcre.cc.i
+
+re2/mimics_pcre.s: re2/mimics_pcre.cc.s
+.PHONY : re2/mimics_pcre.s
+
+# target to generate assembly for a file
+re2/mimics_pcre.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/mimics_pcre.cc.s
+.PHONY : re2/mimics_pcre.cc.s
+
+re2/nfa.o: re2/nfa.cc.o
+.PHONY : re2/nfa.o
+
+# target to build an object file
+re2/nfa.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/nfa.cc.o
+.PHONY : re2/nfa.cc.o
+
+re2/nfa.i: re2/nfa.cc.i
+.PHONY : re2/nfa.i
+
+# target to preprocess a source file
+re2/nfa.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/nfa.cc.i
+.PHONY : re2/nfa.cc.i
+
+re2/nfa.s: re2/nfa.cc.s
+.PHONY : re2/nfa.s
+
+# target to generate assembly for a file
+re2/nfa.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/nfa.cc.s
+.PHONY : re2/nfa.cc.s
+
+re2/onepass.o: re2/onepass.cc.o
+.PHONY : re2/onepass.o
+
+# target to build an object file
+re2/onepass.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/onepass.cc.o
+.PHONY : re2/onepass.cc.o
+
+re2/onepass.i: re2/onepass.cc.i
+.PHONY : re2/onepass.i
+
+# target to preprocess a source file
+re2/onepass.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/onepass.cc.i
+.PHONY : re2/onepass.cc.i
+
+re2/onepass.s: re2/onepass.cc.s
+.PHONY : re2/onepass.s
+
+# target to generate assembly for a file
+re2/onepass.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/onepass.cc.s
+.PHONY : re2/onepass.cc.s
+
+re2/parse.o: re2/parse.cc.o
+.PHONY : re2/parse.o
+
+# target to build an object file
+re2/parse.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/parse.cc.o
+.PHONY : re2/parse.cc.o
+
+re2/parse.i: re2/parse.cc.i
+.PHONY : re2/parse.i
+
+# target to preprocess a source file
+re2/parse.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/parse.cc.i
+.PHONY : re2/parse.cc.i
+
+re2/parse.s: re2/parse.cc.s
+.PHONY : re2/parse.s
+
+# target to generate assembly for a file
+re2/parse.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/parse.cc.s
+.PHONY : re2/parse.cc.s
+
+re2/perl_groups.o: re2/perl_groups.cc.o
+.PHONY : re2/perl_groups.o
+
+# target to build an object file
+re2/perl_groups.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/perl_groups.cc.o
+.PHONY : re2/perl_groups.cc.o
+
+re2/perl_groups.i: re2/perl_groups.cc.i
+.PHONY : re2/perl_groups.i
+
+# target to preprocess a source file
+re2/perl_groups.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/perl_groups.cc.i
+.PHONY : re2/perl_groups.cc.i
+
+re2/perl_groups.s: re2/perl_groups.cc.s
+.PHONY : re2/perl_groups.s
+
+# target to generate assembly for a file
+re2/perl_groups.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/perl_groups.cc.s
+.PHONY : re2/perl_groups.cc.s
+
+re2/prefilter.o: re2/prefilter.cc.o
+.PHONY : re2/prefilter.o
+
+# target to build an object file
+re2/prefilter.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/prefilter.cc.o
+.PHONY : re2/prefilter.cc.o
+
+re2/prefilter.i: re2/prefilter.cc.i
+.PHONY : re2/prefilter.i
+
+# target to preprocess a source file
+re2/prefilter.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/prefilter.cc.i
+.PHONY : re2/prefilter.cc.i
+
+re2/prefilter.s: re2/prefilter.cc.s
+.PHONY : re2/prefilter.s
+
+# target to generate assembly for a file
+re2/prefilter.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/prefilter.cc.s
+.PHONY : re2/prefilter.cc.s
+
+re2/prefilter_tree.o: re2/prefilter_tree.cc.o
+.PHONY : re2/prefilter_tree.o
+
+# target to build an object file
+re2/prefilter_tree.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/prefilter_tree.cc.o
+.PHONY : re2/prefilter_tree.cc.o
+
+re2/prefilter_tree.i: re2/prefilter_tree.cc.i
+.PHONY : re2/prefilter_tree.i
+
+# target to preprocess a source file
+re2/prefilter_tree.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/prefilter_tree.cc.i
+.PHONY : re2/prefilter_tree.cc.i
+
+re2/prefilter_tree.s: re2/prefilter_tree.cc.s
+.PHONY : re2/prefilter_tree.s
+
+# target to generate assembly for a file
+re2/prefilter_tree.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/prefilter_tree.cc.s
+.PHONY : re2/prefilter_tree.cc.s
+
+re2/prog.o: re2/prog.cc.o
+.PHONY : re2/prog.o
+
+# target to build an object file
+re2/prog.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/prog.cc.o
+.PHONY : re2/prog.cc.o
+
+re2/prog.i: re2/prog.cc.i
+.PHONY : re2/prog.i
+
+# target to preprocess a source file
+re2/prog.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/prog.cc.i
+.PHONY : re2/prog.cc.i
+
+re2/prog.s: re2/prog.cc.s
+.PHONY : re2/prog.s
+
+# target to generate assembly for a file
+re2/prog.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/prog.cc.s
+.PHONY : re2/prog.cc.s
+
+re2/re2.o: re2/re2.cc.o
+.PHONY : re2/re2.o
+
+# target to build an object file
+re2/re2.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/re2.cc.o
+.PHONY : re2/re2.cc.o
+
+re2/re2.i: re2/re2.cc.i
+.PHONY : re2/re2.i
+
+# target to preprocess a source file
+re2/re2.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/re2.cc.i
+.PHONY : re2/re2.cc.i
+
+re2/re2.s: re2/re2.cc.s
+.PHONY : re2/re2.s
+
+# target to generate assembly for a file
+re2/re2.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/re2.cc.s
+.PHONY : re2/re2.cc.s
+
+re2/regexp.o: re2/regexp.cc.o
+.PHONY : re2/regexp.o
+
+# target to build an object file
+re2/regexp.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/regexp.cc.o
+.PHONY : re2/regexp.cc.o
+
+re2/regexp.i: re2/regexp.cc.i
+.PHONY : re2/regexp.i
+
+# target to preprocess a source file
+re2/regexp.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/regexp.cc.i
+.PHONY : re2/regexp.cc.i
+
+re2/regexp.s: re2/regexp.cc.s
+.PHONY : re2/regexp.s
+
+# target to generate assembly for a file
+re2/regexp.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/regexp.cc.s
+.PHONY : re2/regexp.cc.s
+
+re2/set.o: re2/set.cc.o
+.PHONY : re2/set.o
+
+# target to build an object file
+re2/set.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/set.cc.o
+.PHONY : re2/set.cc.o
+
+re2/set.i: re2/set.cc.i
+.PHONY : re2/set.i
+
+# target to preprocess a source file
+re2/set.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/set.cc.i
+.PHONY : re2/set.cc.i
+
+re2/set.s: re2/set.cc.s
+.PHONY : re2/set.s
+
+# target to generate assembly for a file
+re2/set.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/set.cc.s
+.PHONY : re2/set.cc.s
+
+re2/simplify.o: re2/simplify.cc.o
+.PHONY : re2/simplify.o
+
+# target to build an object file
+re2/simplify.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/simplify.cc.o
+.PHONY : re2/simplify.cc.o
+
+re2/simplify.i: re2/simplify.cc.i
+.PHONY : re2/simplify.i
+
+# target to preprocess a source file
+re2/simplify.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/simplify.cc.i
+.PHONY : re2/simplify.cc.i
+
+re2/simplify.s: re2/simplify.cc.s
+.PHONY : re2/simplify.s
+
+# target to generate assembly for a file
+re2/simplify.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/simplify.cc.s
+.PHONY : re2/simplify.cc.s
+
+re2/stringpiece.o: re2/stringpiece.cc.o
+.PHONY : re2/stringpiece.o
+
+# target to build an object file
+re2/stringpiece.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/stringpiece.cc.o
+.PHONY : re2/stringpiece.cc.o
+
+re2/stringpiece.i: re2/stringpiece.cc.i
+.PHONY : re2/stringpiece.i
+
+# target to preprocess a source file
+re2/stringpiece.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/stringpiece.cc.i
+.PHONY : re2/stringpiece.cc.i
+
+re2/stringpiece.s: re2/stringpiece.cc.s
+.PHONY : re2/stringpiece.s
+
+# target to generate assembly for a file
+re2/stringpiece.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/stringpiece.cc.s
+.PHONY : re2/stringpiece.cc.s
+
+re2/tostring.o: re2/tostring.cc.o
+.PHONY : re2/tostring.o
+
+# target to build an object file
+re2/tostring.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/tostring.cc.o
+.PHONY : re2/tostring.cc.o
+
+re2/tostring.i: re2/tostring.cc.i
+.PHONY : re2/tostring.i
+
+# target to preprocess a source file
+re2/tostring.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/tostring.cc.i
+.PHONY : re2/tostring.cc.i
+
+re2/tostring.s: re2/tostring.cc.s
+.PHONY : re2/tostring.s
+
+# target to generate assembly for a file
+re2/tostring.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/tostring.cc.s
+.PHONY : re2/tostring.cc.s
+
+re2/unicode_casefold.o: re2/unicode_casefold.cc.o
+.PHONY : re2/unicode_casefold.o
+
+# target to build an object file
+re2/unicode_casefold.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/unicode_casefold.cc.o
+.PHONY : re2/unicode_casefold.cc.o
+
+re2/unicode_casefold.i: re2/unicode_casefold.cc.i
+.PHONY : re2/unicode_casefold.i
+
+# target to preprocess a source file
+re2/unicode_casefold.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/unicode_casefold.cc.i
+.PHONY : re2/unicode_casefold.cc.i
+
+re2/unicode_casefold.s: re2/unicode_casefold.cc.s
+.PHONY : re2/unicode_casefold.s
+
+# target to generate assembly for a file
+re2/unicode_casefold.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/unicode_casefold.cc.s
+.PHONY : re2/unicode_casefold.cc.s
+
+re2/unicode_groups.o: re2/unicode_groups.cc.o
+.PHONY : re2/unicode_groups.o
+
+# target to build an object file
+re2/unicode_groups.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/unicode_groups.cc.o
+.PHONY : re2/unicode_groups.cc.o
+
+re2/unicode_groups.i: re2/unicode_groups.cc.i
+.PHONY : re2/unicode_groups.i
+
+# target to preprocess a source file
+re2/unicode_groups.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/unicode_groups.cc.i
+.PHONY : re2/unicode_groups.cc.i
+
+re2/unicode_groups.s: re2/unicode_groups.cc.s
+.PHONY : re2/unicode_groups.s
+
+# target to generate assembly for a file
+re2/unicode_groups.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/re2/unicode_groups.cc.s
+.PHONY : re2/unicode_groups.cc.s
+
+util/rune.o: util/rune.cc.o
+.PHONY : util/rune.o
+
+# target to build an object file
+util/rune.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/util/rune.cc.o
+.PHONY : util/rune.cc.o
+
+util/rune.i: util/rune.cc.i
+.PHONY : util/rune.i
+
+# target to preprocess a source file
+util/rune.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/util/rune.cc.i
+.PHONY : util/rune.cc.i
+
+util/rune.s: util/rune.cc.s
+.PHONY : util/rune.s
+
+# target to generate assembly for a file
+util/rune.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/util/rune.cc.s
+.PHONY : util/rune.cc.s
+
+util/strutil.o: util/strutil.cc.o
+.PHONY : util/strutil.o
+
+# target to build an object file
+util/strutil.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/util/strutil.cc.o
+.PHONY : util/strutil.cc.o
+
+util/strutil.i: util/strutil.cc.i
+.PHONY : util/strutil.i
+
+# target to preprocess a source file
+util/strutil.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/util/strutil.cc.i
+.PHONY : util/strutil.cc.i
+
+util/strutil.s: util/strutil.cc.s
+.PHONY : util/strutil.s
+
+# target to generate assembly for a file
+util/strutil.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/re2.dir/build.make CMakeFiles/re2.dir/util/strutil.cc.s
+.PHONY : util/strutil.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -282,6 +823,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... SequenceMatching_LCP"
+	@echo "... re2"
 	@echo "... FileManipulation.o"
 	@echo "... FileManipulation.i"
 	@echo "... FileManipulation.s"
@@ -300,6 +842,72 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... re2/bitstate.o"
+	@echo "... re2/bitstate.i"
+	@echo "... re2/bitstate.s"
+	@echo "... re2/compile.o"
+	@echo "... re2/compile.i"
+	@echo "... re2/compile.s"
+	@echo "... re2/dfa.o"
+	@echo "... re2/dfa.i"
+	@echo "... re2/dfa.s"
+	@echo "... re2/filtered_re2.o"
+	@echo "... re2/filtered_re2.i"
+	@echo "... re2/filtered_re2.s"
+	@echo "... re2/mimics_pcre.o"
+	@echo "... re2/mimics_pcre.i"
+	@echo "... re2/mimics_pcre.s"
+	@echo "... re2/nfa.o"
+	@echo "... re2/nfa.i"
+	@echo "... re2/nfa.s"
+	@echo "... re2/onepass.o"
+	@echo "... re2/onepass.i"
+	@echo "... re2/onepass.s"
+	@echo "... re2/parse.o"
+	@echo "... re2/parse.i"
+	@echo "... re2/parse.s"
+	@echo "... re2/perl_groups.o"
+	@echo "... re2/perl_groups.i"
+	@echo "... re2/perl_groups.s"
+	@echo "... re2/prefilter.o"
+	@echo "... re2/prefilter.i"
+	@echo "... re2/prefilter.s"
+	@echo "... re2/prefilter_tree.o"
+	@echo "... re2/prefilter_tree.i"
+	@echo "... re2/prefilter_tree.s"
+	@echo "... re2/prog.o"
+	@echo "... re2/prog.i"
+	@echo "... re2/prog.s"
+	@echo "... re2/re2.o"
+	@echo "... re2/re2.i"
+	@echo "... re2/re2.s"
+	@echo "... re2/regexp.o"
+	@echo "... re2/regexp.i"
+	@echo "... re2/regexp.s"
+	@echo "... re2/set.o"
+	@echo "... re2/set.i"
+	@echo "... re2/set.s"
+	@echo "... re2/simplify.o"
+	@echo "... re2/simplify.i"
+	@echo "... re2/simplify.s"
+	@echo "... re2/stringpiece.o"
+	@echo "... re2/stringpiece.i"
+	@echo "... re2/stringpiece.s"
+	@echo "... re2/tostring.o"
+	@echo "... re2/tostring.i"
+	@echo "... re2/tostring.s"
+	@echo "... re2/unicode_casefold.o"
+	@echo "... re2/unicode_casefold.i"
+	@echo "... re2/unicode_casefold.s"
+	@echo "... re2/unicode_groups.o"
+	@echo "... re2/unicode_groups.i"
+	@echo "... re2/unicode_groups.s"
+	@echo "... util/rune.o"
+	@echo "... util/rune.i"
+	@echo "... util/rune.s"
+	@echo "... util/strutil.o"
+	@echo "... util/strutil.i"
+	@echo "... util/strutil.s"
 .PHONY : help
 
 

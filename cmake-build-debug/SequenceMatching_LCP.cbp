@@ -17,6 +17,52 @@
 					<DistClean command="/usr/bin/make -j10 -f &quot;/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
+			<Target title="re2">
+				<Option output="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/libre2.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2"/>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/util"/>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j10 -f &quot;/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/Makefile&quot;  VERBOSE=1 re2"/>
+					<CompileFile command="/usr/bin/make -j10 -f &quot;/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j10 -f &quot;/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j10 -f &quot;/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="re2/fast">
+				<Option output="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/libre2.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2"/>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/util"/>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j10 -f &quot;/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/Makefile&quot;  VERBOSE=1 re2/fast"/>
+					<CompileFile command="/usr/bin/make -j10 -f &quot;/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j10 -f &quot;/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j10 -f &quot;/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
 			<Target title="SequenceMatching_LCP">
 				<Option output="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/SequenceMatching_LCP" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug"/>
@@ -24,6 +70,9 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2"/>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/util"/>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
@@ -44,6 +93,9 @@
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2"/>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/util"/>
+					<Add directory="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include"/>
 					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
@@ -110,6 +162,105 @@
 		</Unit>
 		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/main.cpp">
 			<Option target="SequenceMatching_LCP"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/bitstate.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/compile.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/dfa.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/filtered_re2.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/filtered_re2.h">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/mimics_pcre.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/nfa.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/onepass.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/parse.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/perl_groups.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/prefilter.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/prefilter.h">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/prefilter_tree.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/prefilter_tree.h">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/prog.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/prog.h">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/re2.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/re2.h">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/regexp.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/regexp.h">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/set.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/set.h">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/simplify.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/stringpiece.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/stringpiece.h">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/tostring.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/unicode_casefold.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/unicode_casefold.h">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/unicode_groups.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2/unicode_groups.h">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/util/rune.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/util/strutil.cc">
+			<Option target="re2"/>
+		</Unit>
+		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/util/strutil.h">
+			<Option target="re2"/>
 		</Unit>
 		<Unit filename="/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>

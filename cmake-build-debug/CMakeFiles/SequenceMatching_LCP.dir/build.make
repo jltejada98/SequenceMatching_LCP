@@ -172,6 +172,7 @@ SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/MatchLocations.cpp.o
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/SequenceMatching.cpp.o
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/MatchValidity.cpp.o
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/build.make
+SequenceMatching_LCP: libre2.a
 SequenceMatching_LCP: CMakeFiles/SequenceMatching_LCP.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable SequenceMatching_LCP"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SequenceMatching_LCP.dir/link.txt --verbose=$(VERBOSE)

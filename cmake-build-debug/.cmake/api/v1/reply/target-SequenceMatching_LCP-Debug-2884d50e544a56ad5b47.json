@@ -10,7 +10,9 @@
 	{
 		"commands" : 
 		[
-			"add_executable"
+			"add_executable",
+			"target_link_libraries",
+			"include_directories"
 		],
 		"files" : 
 		[
@@ -24,7 +26,25 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 7,
+				"line" : 49,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 60,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 39,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 0,
+				"line" : 40,
 				"parent" : 0
 			}
 		]
@@ -41,12 +61,27 @@
 					"fragment" : "-std=gnu++11"
 				}
 			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 3,
+					"path" : "/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/util"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP"
+				}
+			],
 			"language" : "CXX",
 			"languageStandard" : 
 			{
 				"backtraces" : 
 				[
-					1
+					2
 				],
 				"standard" : "11"
 			},
@@ -69,6 +104,21 @@
 					"fragment" : "-std=gnu99"
 				}
 			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 3,
+					"path" : "/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/re2"
+				},
+				{
+					"backtrace" : 4,
+					"path" : "/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP/util"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "/Users/joseluistejada/Documents/Other/Development/C++/SequenceMatching_LCP"
+				}
+			],
 			"language" : "C",
 			"languageStandard" : 
 			{
@@ -84,6 +134,13 @@
 			]
 		}
 	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "re2::@6890427a1f51a3e7e1df"
+		}
+	],
 	"id" : "SequenceMatching_LCP::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
@@ -96,6 +153,11 @@
 			{
 				"fragment" : "",
 				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "libre2.a",
+				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
