@@ -195,8 +195,6 @@ Determine_Valid_Matches_Child(std::unordered_map<std::string, MatchValidity> &ma
     size_t index = startIndex;
     size_t hardEndIndex = SAVector.size();
     std::shared_ptr<std::vector<std::unordered_set<int>>> matchVector;
-    std::shared_ptr<std::string> newMatchString;
-    std::vector<std::string> matchesMapKeys;
 
     std::shared_ptr<MatchValidity> newMatchValidity;
     std::pair<std::string, MatchValidity> newMatchPair;
@@ -222,7 +220,6 @@ Determine_Valid_Matches_Child(std::unordered_map<std::string, MatchValidity> &ma
                         newMatchValidity->InsertSeqIndex(indexVector[index]);
                         newMatchPair = std::make_pair(*partition, *newMatchValidity);
                         matchesMap.insert(newMatchPair);
-                        matchesMapKeys.push_back(*partition);
                     }
                 }
                 partitions->clear();
