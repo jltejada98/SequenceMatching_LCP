@@ -34,10 +34,14 @@ std::shared_ptr<std::vector<std::shared_ptr<std::string>>>
 Determine_StringPartitions(const std::string &key, const int &keyLen, const int &minLength, const int &maxLength);
 
 
-void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocations> &matchesMap,
-                                     std::vector<std::string> &validMatches, std::vector<int> &indexVector,
-                                     std::vector<std::shared_ptr<std::string>> &seqStringVector, int numSequences,
-                                     size_t startIndex, size_t endIndex);
+void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocations> &matchesMap, std::vector<int> &LCPVector,
+                                     std::vector<int> &SAVector,std::vector<std::string> &validMatches, std::vector<int> &indexVector,
+                                     std::vector<std::shared_ptr<std::string>> &seqStringVector,int minimumMatchSize,
+                                     int maximumMatchSize, int numSequences, size_t startIndex, size_t endIndex);
+
+std::shared_ptr<std::vector<std::shared_ptr<std::string>>>
+Determine_LocationPartitions(const std::string &key, const int &keyLen, const int &minLength, const int &maxLength,
+                             std::shared_ptr<std::vector<int>> &partitionsShiftList);
 
 std::shared_ptr<std::vector<double>>
 Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &matchesMap, std::string &seqStringCombined,

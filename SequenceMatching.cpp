@@ -148,6 +148,8 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
         threadMapVector.push_back(matchLocationMap);
     }
 
+
+    /*
     //Create 1st Thread
     std::cout << "Creating Location Thread: 0" << std::endl;
     threadArray[0] = std::thread(Determine_Match_Locations_Child, std::ref(*threadMapVector[0]),
@@ -184,6 +186,8 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Possi
     }
 
     return threadMapVector[0];
+
+     */
 }
 
 
@@ -194,7 +198,6 @@ Determine_Valid_Matches_Child(std::unordered_map<std::string, MatchValidity> &ma
                               std::vector<int> &seqRangeVector, size_t startIndex, size_t endIndex) {
     size_t index = startIndex;
     size_t hardEndIndex = SAVector.size();
-    std::shared_ptr<std::vector<std::unordered_set<int>>> matchVector;
 
     std::shared_ptr<MatchValidity> newMatchValidity;
     std::pair<std::string, MatchValidity> newMatchPair;
@@ -247,39 +250,80 @@ Determine_StringPartitions(const std::string &key, const int &keyLen, const int 
 }
 
 
-void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocations> &matchesMap,
-                                     std::vector<std::string> &validMatches, std::vector<int> &indexVector,
-                                     std::vector<std::shared_ptr<std::string>> &seqStringVector, int numSequences,
-                                     size_t startIndex, size_t endIndex) {
-    std::string matchString;
-    size_t foundAtIndex;
-    size_t matchesMapIndex = startIndex;
-    std::regex regexKey;
-    std::sregex_iterator foundIterator;
-    auto regexEnd = std::sregex_iterator();
+//Todo Make index vector size_t type.
 
-    std::shared_ptr<MatchLocations> newMatchLocations;
+void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocations> &matchesMap, std::vector<int> &LCPVector,
+                                     std::vector<int> &SAVector,std::vector<std::string> &validMatches, std::vector<int> &indexVector,
+                                     std::vector<std::shared_ptr<std::string>> &seqStringVector,int minimumMatchSize,
+                                     int maximumMatchSize, int numSequences, size_t startIndex, size_t endIndex) {
 
-    while(matchesMapIndex < endIndex){ //Iterate through all matches in partition
-        matchString = validMatches[matchesMapIndex];
-        regexKey = std::regex("(?=(" + matchString + "))."); //Added positive lookahead to find overlapping matchStrings.
-        newMatchLocations = std::make_shared<MatchLocations>(numSequences);
-        auto newMatchPair = std::make_pair(matchString, *newMatchLocations);
-        matchesMap.insert(newMatchPair);
-        for (size_t seqIndex = 0; seqIndex < numSequences; ++seqIndex) { //For each sequence in query, determine instances of match
-            foundIterator = std::sregex_iterator(seqStringVector[seqIndex]->begin(), seqStringVector[seqIndex]->end(), regexKey);
-            for(std::sregex_iterator i = foundIterator; i != regexEnd; i++){
-                foundAtIndex = i->position();
-                matchesMap.at(matchString).InsertMatch(foundAtIndex,seqIndex);
+    size_t index = startIndex;
+    size_t hardEndIndex = SAVector.size();
+    std::shared_ptr<std::vector<std::unordered_set<int>>> matchVector;
+    std::shared_ptr<std::string> newMatchString;
+    std::vector<std::string> matchesMapKeys;
+
+    std::shared_ptr<MatchLocations> newMatchLocation;
+    std::vector<int> partitionShiftList;
+    std::shared_ptr<std::vector<std::shared_ptr<std::string>>> partitions;
+    std::shared_ptr<std::vector<int>> partitionsShiftList = std::make_shared<std::vector<int>>(partitionShiftList);
+
+    while(index < endIndex){
+        if (LCPVector.at(index) >= minimumMatchSize){
+            while((index  < hardEndIndex) && (LCPVector.at(index) >= minimumMatchSize)){ //Determine end of run (Go Past end if match overlaps)
+                //For each match, partition by taking prefix of suffix
+                partitions = Determine_LocationPartitions(seqStringVector[indexVector[index]]->substr(SAVector.at(index), LCPVector.at(index)),
+                                                  LCPVector.at(index), minimumMatchSize, maximumMatchSize,
+                                                  partitionsShiftList);
+                //Check all partitions against map
+                for (int i = 0; i < partitions->size(); ++i) { //Iterate all partitions.
+
+                    //Determine if the partition is valid on the
+
+
+
+
+
+
+
+                    if(matchesMap.count(*partitions->at(i))){ //If partition exists, add match location
+                        matchesMap.at(*partitions->at(i)).InsertMatch(SAVector.at(index - 1) + partitionsShiftList->at(i), indexVector[index - 1]);
+                        matchesMap.at(*partitions->at(i)).InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
+                    }
+                    else{ //Create new possible match
+                        newMatchLocation = std::make_shared<MatchLocations>(numSequences);
+                        newMatchLocation->InsertMatch(SAVector.at(index - 1) + partitionsShiftList->at(i), indexVector.at(index - 1));
+                        newMatchLocation->InsertMatch(SAVector.at(index) + partitionsShiftList->at(i), indexVector.at(index));
+                        std::pair<std::string, MatchLocations> newMatchPair = std::make_pair(*partitions->at(i), *newMatchLocation);
+                        matchesMap.insert(newMatchPair);
+                        matchesMapKeys.push_back(*partitions->at(i));
+                    }
+                }
+                partitions->clear();
+                partitionsShiftList->clear();
+                ++index;
             }
         }
-        ++matchesMapIndex;
+        ++index;
     }
 
 }
 
 
+std::shared_ptr<std::vector<std::shared_ptr<std::string>>>
+Determine_LocationPartitions(const std::string &key, const int &keyLen, const int &minLength, const int &maxLength,
+                             std::shared_ptr<std::vector<int>> &partitionsShiftList) {
+    std::vector<std::shared_ptr<std::string>> partitionsStringList;
+    int partitionLength = keyLen < maxLength ? keyLen : maxLength;
+    for(; partitionLength >= minLength; --partitionLength){
+        for (int partitionIndex = 0; (partitionIndex + partitionLength) <= keyLen ; ++partitionIndex){
+            partitionsShiftList->push_back(partitionIndex);
+            partitionsStringList.push_back(std::make_shared<std::string>(std::string(key.substr(partitionIndex, partitionLength))));
+        }
+    }
 
+    return std::make_shared<std::vector<std::shared_ptr<std::string>>>(partitionsStringList);
+}
 
 
 std::shared_ptr<std::vector<double>>
