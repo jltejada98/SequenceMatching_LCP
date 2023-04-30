@@ -21,11 +21,28 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Match
         std::vector<int> &seqRangeVector);
 
 void
+Determine_Valid_Matches_Child(std::unordered_map<std::string, MatchLocations> &matchesMap, std::vector<int> &LCPVector,
+                              std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
+                              int maximumMatchSize, std::vector<std::shared_ptr<std::string>> &seqStringVector,
+                              std::vector<int> &seqRangeVector, size_t startIndex, size_t endIndex);
+
+std::shared_ptr<std::vector<std::shared_ptr<std::string>>>
+Determine_StringPartitions(const std::string &key, const int &keyLen, const int &minLength, const int &maxLength);
+
+
+
+
+
+
+
+
+
+void
 Determine_Matches_Child(std::unordered_map<std::string, MatchLocations> &matchesMap, std::vector<int> &LCPVector,
                         std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
                         int maximumMatchSize, int numSequences,
                         std::vector<std::shared_ptr<std::string>> &seqStringVector,
-                        std::vector<int> &seqRangeVector, size_t startIndex, size_t endIndex);
+                        std::vector<int> &seqRangeVector, int startIndex, int endIndex);
 
 std::shared_ptr<std::vector<std::shared_ptr<std::string>>>
 Determine_Partitions(const std::string &key, const int &keyLen, const int &minLength, const int &maxLength,

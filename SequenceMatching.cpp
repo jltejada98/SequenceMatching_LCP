@@ -25,19 +25,40 @@ std::shared_ptr<std::vector<int>> Determine_Index_Mapping(std::vector<int> &SAve
     return std::make_shared<std::vector<int>>(indexVector);
 }
 
+//Testing new method of determining matches: Doesn't use memory for non-valid matches, removes them before determining locations
+//1) For all new child threads
+//   -Determine if a given possible match satisfies min,max
+//   -Determine all partitions, and store their sequence index (i.e: Which sequence they belong to)
+//   -Store the corresponging LCP vector.
+//   -For all partitions, determine if already exists, if so, add their sequence index.
+//2) Merge all matches found by threads, specifically their sequence index.
+//3) Determine if a given match includes sequences from all indecies.
+//    - If not remove the match
+//4) Create new child threads to iterate through valid remaining matches using the LCP indecies previously stored to expand and
+//   generate all matches.
+
+
 std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Matches_Parent(
         std::vector<int> &LCPVector, std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
         int maximumMatchSize, int numSequences, std::vector<std::shared_ptr<std::string>> &seqStringVector,
         std::vector<int> &seqRangeVector){
     int i;
     int threadMapIndex;
-    size_t numSplits = std::thread::hardware_concurrency();
+    int numSplits = std::thread::hardware_concurrency();
     std::thread threadArray[numSplits];
-    size_t splitSize = SAVector.size() / numSplits;
-    size_t splitRemainder = SAVector.size() % numSplits; //Determine remainder, and add to first task.
-    size_t startIndex = 0; //Guaranteed for LCP[0..numSequences] == 0 due to sentinel higher lexographical order (Only for 1st thread)
-    size_t endIndex = splitSize + splitRemainder;
+    int splitSize = SAVector.size() / numSplits;
+    int splitRemainder = SAVector.size() % numSplits; //Determine remainder, and add to first task.
+    int startIndex = 0; //Guaranteed for LCP[0..numSequences] == 0 due to sentinel higher lexographical order (Only for 1st thread)
+    int endIndex = splitSize + splitRemainder;
     std::vector<std::shared_ptr<std::unordered_map<std::string, MatchLocations>>> threadMapVector;
+
+
+    //Todo change print messages
+    //////////////////////////////////////////////////////////////////////////
+    //1. Remove invalid matches, by determining number of sequences present.//
+    //////////////////////////////////////////////////////////////////////////
+    //Initialize Vector
+
 
     //Initialize Vector
     for (i = 0; i < numSplits; ++i) { //Check if works
@@ -46,20 +67,23 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Match
     }
 
     //Create 1st Thread
-    threadArray[0] = std::thread(Determine_Matches_Child, std::ref(*threadMapVector[0]), std::ref(LCPVector),
+    threadArray[0] = std::thread(Determine_Valid_Matches_Child, std::ref(*threadMapVector[0]), std::ref(LCPVector),
                                  std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
-                                 numSequences, std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
-//    Determine_Matches_Child(*threadMapVector[0], LCPVector, SAVector, indexVector, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, seqRangeVector, startIndex, endIndex);  //Single Threaded for Testing
-
+                                 std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
+//    Determine_Valid_Matches_Child(*validityThreadVector[0], LCPVector, SAVector, indexVector, minimumMatchSize,
+//                                  maximumMatchSize, seqStringVector, seqRangeVector, startIndex,
+//                                  endIndex);  //Single Threaded for Testing
 
     //Create subsequent threads
     for (i = 1; i < numSplits; ++i) {
         startIndex = endIndex;
         endIndex = startIndex+splitSize;
-        threadArray[i] = std::thread(Determine_Matches_Child, std::ref(*threadMapVector[i]), std::ref(LCPVector),
+        threadArray[i] = std::thread(Determine_Valid_Matches_Child, std::ref(*threadMapVector[i]), std::ref(LCPVector),
                                      std::ref(SAVector), std::ref(indexVector), minimumMatchSize, maximumMatchSize,
-                                     numSequences, std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
-//        Determine_Matches_Child(*threadMapVector[i], LCPVector, SAVector, indexVector, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, seqRangeVector, startIndex, endIndex); //Single Threaded for Testing
+                                     std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
+        //        Determine_Valid_Matches_Child(*validityThreadVector[i], LCPVector, SAVector, indexVector, minimumMatchSize,
+        //                                      maximumMatchSize, seqStringVector, seqRangeVector, startIndex,
+        //                                      endIndex); //Single Threaded for Testing
     }
 
     //Wait for all threads to complete
@@ -68,48 +92,121 @@ std::shared_ptr<std::unordered_map<std::string, MatchLocations>> Determine_Match
         threadArray[i].join();
     }
 
-    std::cout << "Merging Match Threads" << std::endl;
 
-    //Merge matchesMap
-    std::unordered_map<std::string, MatchLocations> matchesMap;
-    std::vector<std::string> matchesMapKeys;
+    std::cout << "Finished Determining Valid Matches." << std::endl;
 
-    for (threadMapIndex = 0; threadMapIndex < numSplits; ++threadMapIndex) {
-        std::cout << "Merging Thread: " << threadMapIndex << std::endl;
-        for(auto &threadMapMatch: *threadMapVector.at(threadMapIndex)) { //For each match in threadMap
-            if(matchesMap.count(threadMapMatch.first)){ //If match already exists, add sequence indecies
-                matchesMap.at(threadMapMatch.first).mergeMatches(threadMapMatch.second.getMatchVector(), threadMapMatch.second.getUniqueSeqIndices());
+    //Merge all thread validity maps into parentMatchValidity
+    std::vector<std::string> keysToCheckValidity;
+
+
+    //Using threadMapVector[0] as the parent.
+    //Add keys from first map to vector
+    for(auto const &item: *threadMapVector[0]){
+        keysToCheckValidity.push_back(item.first);
+    }
+
+    for (threadMapIndex = 1; threadMapIndex < numSplits; ++threadMapIndex) {
+        std::cout << "Merging Validity Thread: " << threadMapIndex << std::endl;
+        for(auto &threadMapMatch: *threadMapVector[threadMapIndex]) { //For each match in threadMap
+            if(threadMapVector[0]->count(threadMapMatch.first)){ //If match already exists, add sequence indecies
+                threadMapVector[0]->at(threadMapMatch.first).mergeUniqueSeq_LCPIndex(threadMapMatch.second.getUniqueSeqIndices(), threadMapMatch.second.getLCPIndecies());
             }
-            else{ //Create new pair and push to map
-                matchesMapKeys.push_back(threadMapMatch.first);
+            else{ //Create new pair and push to map, remove from source map.
+                keysToCheckValidity.push_back(threadMapMatch.first); //Creating match
                 std::pair<std::string, MatchLocations> newMatchPair = std::make_pair(threadMapMatch.first, threadMapMatch.second);
-                matchesMap.insert(newMatchPair);
+                threadMapVector[0]->insert(newMatchPair);
             }
         }
-        threadMapVector.at(threadMapIndex)->clear();
+        threadMapVector[threadMapIndex]->clear();
     }
 
-    std::cout <<  "Removing non-qualifying matches" << std::endl;
-    //Check if has items from all sequences.
-    for(auto & key: matchesMapKeys){
-        if(matchesMap.at(key).numSeqIncluded() < numSequences){
-            matchesMap.erase(key);
+    std::cout <<  "Removing invalid matches..." << std::endl;
+    //Check if key has items from all sequences.
+    std::vector<std::string> validMatches; //Contains valid matches to be used in splitting matches
+    for(auto & key: keysToCheckValidity){
+        if(threadMapVector[0]->at(key).numSeqIncluded() == numSequences){
+            validMatches.push_back(key);
         }
     }
+
+
+
+
+
+
 
     return std::make_shared<std::unordered_map<std::string, MatchLocations>>(matchesMap);
 }
 
 
+void
+Determine_Valid_Matches_Child(std::unordered_map<std::string, MatchLocations> &matchesMap, std::vector<int> &LCPVector,
+                              std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
+                              int maximumMatchSize, std::vector<std::shared_ptr<std::string>> &seqStringVector,
+                              std::vector<int> &seqRangeVector, size_t startIndex, size_t endIndex) {
+    size_t index = startIndex;
+    size_t hardEndIndex = SAVector.size();
+
+    std::shared_ptr<MatchLocations> newMatchValidity;
+    std::pair<std::string, MatchLocations> newMatchPair;
+    std::shared_ptr<std::vector<std::shared_ptr<std::string>>> partitions;
+
+    while(index < endIndex){
+        if (LCPVector[index] >= minimumMatchSize){
+            while((index  < hardEndIndex) && (LCPVector[index] >= minimumMatchSize)){ //Determine end of run (Go Past end if match overlaps)
+                //For each substring, partition string by taking prefix of suffix
+                //A given substring will always belong to one string as idenfied by LCP value, since LCP will not match beyond a string due to sentinels.
+                //Therefore, all of a substrings partitions will also belong to its parent string.
+                partitions = Determine_StringPartitions(seqStringVector[indexVector[index]]->substr(SAVector[index], LCPVector[index]),
+                                                        LCPVector[index], minimumMatchSize, maximumMatchSize);
+                //Check all partitions against map
+                for (auto & partition : *partitions) { //Iterate all partitions.
+                    if(matchesMap.count(*partition)){ //If partition exists, add match location
+                        matchesMap[*partition].InsertUniqueSeq_LCPIndex(indexVector[index - 1],LCPVector[index-1]);
+                        matchesMap[*partition].InsertUniqueSeq_LCPIndex(indexVector[index],LCPVector[index]);
+                    }
+                    else{ //Create new possible match
+                        newMatchValidity = std::make_shared<MatchLocations>();
+                        newMatchValidity->InsertUniqueSeq_LCPIndex(indexVector[index - 1],LCPVector[index-1]);
+                        newMatchValidity->InsertUniqueSeq_LCPIndex(indexVector[index],LCPVector[index]);
+                        newMatchPair = std::make_pair(*partition, *newMatchValidity);
+                        matchesMap.insert(newMatchPair);
+                    }
+                }
+                partitions->clear();
+                ++index;
+            }
+        }
+        ++index;
+    }
+
+}
 
 
+std::shared_ptr<std::vector<std::shared_ptr<std::string>>>
+Determine_StringPartitions(const std::string &key, const int &keyLen, const int &minLength, const int &maxLength) {
+    //Determines all possible substrings of a given key, that are length = [min,max]
+    std::vector<std::shared_ptr<std::string>> partitionsStringList;
+    int partitionLength = keyLen < maxLength ? keyLen : maxLength;
+    for(; partitionLength >= minLength; --partitionLength){
+        for (int partitionIndex = 0; (partitionIndex + partitionLength) <= keyLen ; ++partitionIndex){
+            partitionsStringList.push_back(std::make_shared<std::string>(std::string(key.substr(partitionIndex, partitionLength))));
+        }
+    }
+
+    return std::make_shared<std::vector<std::shared_ptr<std::string>>>(partitionsStringList);
+}
+
+
+
+/*
 void Determine_Matches_Child(std::unordered_map<std::string, MatchLocations> &matchesMap, std::vector<int> &LCPVector,
                              std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
                              int maximumMatchSize, int numSequences,
                              std::vector<std::shared_ptr<std::string>> &seqStringVector,
-                             std::vector<int> &seqRangeVector, size_t startIndex, size_t endIndex) {
-    size_t index = startIndex;
-    size_t hardEndIndex = SAVector.size();
+                             std::vector<int> &seqRangeVector, int startIndex, int endIndex) {
+    int index = startIndex;
+    int hardEndIndex = static_cast<int>(SAVector.size());
     std::shared_ptr<std::vector<std::unordered_set<int>>> matchVector;
     std::shared_ptr<std::string> newMatchString;
     std::vector<std::string> matchesMapKeys;
@@ -165,7 +262,7 @@ Determine_Partitions(const std::string &key, const int &keyLen, const int &minLe
 
     return std::make_shared<std::vector<std::shared_ptr<std::string>>>(partitionsStringList);
 }
-
+*/
 
 std::shared_ptr<std::vector<double>>
 Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &matchesMap, std::string &seqStringCombined,

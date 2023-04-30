@@ -10,14 +10,24 @@
 
 class MatchLocations {
 private:
-    std::vector<std::unordered_set<int>> matchVector; //Vec Pos: SeqIndex, Unordered set: SAIndex
     std::unordered_set<int> uniqueSeqIndices;
+    std::unordered_set<int> LCPIndecies;
+    std::vector<std::unordered_set<int>> matchVector; //Vec Pos: SeqIndex, Unordered set: SAIndex
 public:
     explicit MatchLocations(int &numSequences);
-    void InsertMatch(int SAIndex, int &seqIndex);
+    explicit MatchLocations();
+    void InsertUniqueSeq_LCPIndex(int &seqIndex, int &lcpIndex);
+    void mergeUniqueSeq_LCPIndex(const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies,
+                                 const std::shared_ptr<std::unordered_set<int>> &mergeLCPIndecies);
     int numSeqIncluded();
-    std::shared_ptr<std::vector<std::unordered_set<int>>> getMatchVector();
     std::shared_ptr<std::unordered_set<int>> getUniqueSeqIndices();
+    std::shared_ptr<std::unordered_set<int>> getLCPIndecies();
+
+
+
+    //To modify/Delete
+    void InsertMatch(int &SAIndex, int &seqIndex);
+    std::shared_ptr<std::vector<std::unordered_set<int>>> getMatchVector();
     void mergeMatches(const std::shared_ptr<std::vector<std::unordered_set<int>>> &matchVectorToMerge,
                       const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies);
 };
