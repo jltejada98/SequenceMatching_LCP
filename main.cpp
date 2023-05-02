@@ -73,8 +73,7 @@ int main(int argc, const char *argv[]) {
             minimumMatchSize,
             maximumMatchSize,
             numSequences,
-            seqStringVector,
-            seqRangeVector);
+            seqStringVector);
 
     //DETERMINE SIMILARITY METRICS
     std::cout << "Determining Similarity Metrics..." << std::endl;
