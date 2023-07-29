@@ -9,7 +9,7 @@ MatchLocations::MatchLocations() {
     LCPIndecies.clear();
 }
 
-MatchLocations::MatchLocations(int & numSequences) {
+MatchLocations::MatchLocations(int numSequences) {
     int index;
     std::shared_ptr<std::unordered_set<int>> unorderedSet;
     matchVector.reserve(numSequences);
@@ -21,25 +21,25 @@ MatchLocations::MatchLocations(int & numSequences) {
     LCPIndecies.clear();
 }
 
-void MatchLocations::InsertUniqueSeq_LCPIndex(int &seqIndex, int &lcpIndex) {
+void MatchLocations::InsertUniqueSeq_LCPIndex(int seqIndex, size_t lcpIndex) {
     uniqueSeqIndices.insert(seqIndex);
     LCPIndecies.insert(lcpIndex);
 }
 
-int MatchLocations::numSeqIncluded() {
+int MatchLocations::NumSeqIncluded() {
     return uniqueSeqIndices.size();
 }
 
-std::shared_ptr<std::unordered_set<int>> MatchLocations::getUniqueSeqIndices() {
+std::shared_ptr<std::unordered_set<int>> MatchLocations::GetUniqueSeqIndices() {
     return std::make_shared<std::unordered_set<int>>(uniqueSeqIndices);
 }
 
-std::shared_ptr<std::unordered_set<int>> MatchLocations::getLCPIndecies() {
-    return std::make_shared<std::unordered_set<int>>(LCPIndecies);
+std::shared_ptr<std::unordered_set<size_t>> MatchLocations::GetLCPIndecies() {
+    return std::make_shared<std::unordered_set<size_t>>(LCPIndecies);
 }
 
-void MatchLocations::mergeUniqueSeq_LCPIndex(const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies,
-                                             const std::shared_ptr<std::unordered_set<int>> &mergeLCPIndecies) {
+void MatchLocations::MergeUniqueSeq_LCPIndex(const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies,
+                                             const std::shared_ptr<std::unordered_set<size_t>> &mergeLCPIndecies) {
     for (auto &mergeSeqIndex: *mergeSeqIndecies) { //Add the sequence indecies
         uniqueSeqIndices.insert(mergeSeqIndex);
     }
@@ -48,33 +48,19 @@ void MatchLocations::mergeUniqueSeq_LCPIndex(const std::shared_ptr<std::unordere
     }
 }
 
-
-
-
-
-
-void MatchLocations::InsertMatch(int &SAIndex, int &seqIndex) {
-    matchVector.at(seqIndex).insert(SAIndex);
-    uniqueSeqIndices.insert(seqIndex); //Only keeps unique seqIndices.
+void MatchLocations::InsertLocation(int locationIndex, int seqIndex) {
+    matchVector[seqIndex].insert(locationIndex);
 }
 
-
-std::shared_ptr<std::vector<std::unordered_set<int>>> MatchLocations::getMatchVector() {
-    return std::make_shared<std::vector<std::unordered_set<int>>>(matchVector);
-}
-
-
-
-void MatchLocations::mergeMatches(const std::shared_ptr<std::vector<std::unordered_set<int>>> &matchVectorToMerge,
-                                  const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies) {
-    for (auto &mergeSeqIndex: *mergeSeqIndecies) { //Add the sequence indecies
-        uniqueSeqIndices.insert(mergeSeqIndex);
-    }
-
-    for (int i = 0; i < numSeqIncluded(); ++i) {
+void MatchLocations::MergeMatches(const std::shared_ptr<std::vector<std::unordered_set<int>>> &matchVectorToMerge) {
+    for (int i = 0; i < NumSeqIncluded(); ++i) {
         matchVector[i].insert(matchVectorToMerge->at(i).begin(), matchVectorToMerge->at(i).end());
     }
-    matchVectorToMerge->clear(); //After merging clear contents of merged set.
+    matchVectorToMerge->clear();
+}
+
+std::shared_ptr<std::vector<std::unordered_set<int>>> MatchLocations::GetMatchVector() {
+    return std::make_shared<std::vector<std::unordered_set<int>>>(matchVector);
 }
 
 

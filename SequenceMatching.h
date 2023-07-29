@@ -32,21 +32,17 @@ Determine_StringPartitions(const std::string &key, const int &keyLen, const int 
 
 
 
+void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocations> &matchesMap,
+                                     std::vector<int> &LCPVector, std::vector<int> &SAVector,
+                                     std::vector<int> &indexVector, std::unordered_set<std::string> &validMatches,
+                                     std::vector<int> &validLCPIndecies, int minimumMatchSize, int maximumMatchSize,
+                                     int numSequences, std::vector<std::shared_ptr<std::string>> &seqStringVector,
+                                     size_t startIndex, size_t endIndex);
 
-
-
-
-
-void
-Determine_Matches_Child(std::unordered_map<std::string, MatchLocations> &matchesMap, std::vector<int> &LCPVector,
-                        std::vector<int> &SAVector, std::vector<int> &indexVector, int minimumMatchSize,
-                        int maximumMatchSize, int numSequences,
-                        std::vector<std::shared_ptr<std::string>> &seqStringVector,
-                        std::vector<int> &seqRangeVector, int startIndex, int endIndex);
 
 std::shared_ptr<std::vector<std::shared_ptr<std::string>>>
-Determine_Partitions(const std::string &key, const int &keyLen, const int &minLength, const int &maxLength,
-                     std::shared_ptr<std::vector<int>> &partitionsShiftList);
+Determine_LocationPartitions(const std::string &key, const int &keyLen, const int &minLength, const int &maxLength,
+                             std::shared_ptr<std::vector<int>> &partitionsShiftList);
 
 std::shared_ptr<std::vector<double>>
 Determine_SimilarityMetrics(std::unordered_map<std::string, MatchLocations> &matchesMap, std::string &seqStringCombined,

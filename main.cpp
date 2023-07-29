@@ -15,7 +15,7 @@ int main(int argc, const char *argv[]) {
         return EXIT_FAILURE;
     }
     int numSequences = argc-3;
-    if (numSequences > 32){ //Todo Change Sentinel Characters to allow for more sequencecs to be inputted.
+    if (numSequences > 32){ //Todo Change Sentinel Characters to allow for more sequences to be inputted.
         std::cout << "Too Many Sequences \n" <<std::endl;
         std::cout << "Number of Sequences <= 32 \n" <<std::endl;
         return EXIT_FAILURE;

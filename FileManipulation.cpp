@@ -65,7 +65,7 @@ bool Write_Matches(std::unordered_map<std::string, MatchLocations> &matchesMap,s
         //Write Matches
         for (auto &key : matchesMap){
             File << key.first << std::endl;
-            matchIndicesVector = *key.second.getMatchVector();
+            matchIndicesVector = *key.second.GetMatchVector();
             for (auto &seqSet: matchIndicesVector){
                 for (auto &seqIndex : seqSet){
                     File << seqIndex << ",";
