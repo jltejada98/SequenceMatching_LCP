@@ -63,6 +63,12 @@ int main(int argc, const char *argv[]) {
     //CREATE SUFFIX ARRAY INDEX TO SEQUENCE MAPPING
     std::shared_ptr<std::vector<int>> indexVector = Determine_Index_Mapping(SAVector, seqRangeVector);
 
+    //Print SA, LCP and String
+    for (int i = 0; i < LCPVector.size(); ++i) {
+        if(LCPVector[i] >= minimumMatchSize){
+            std::cout << i << "  " << SAVector[i] << "  " << LCPVector[i] << "  " << indexVector->at(i) << " " << seqStringVector[indexVector->at(i)]->substr(SAVector[i], LCPVector[i]) << std::endl;
+        }
+    }
 
     //DETERMINE MATCHES
     std::cout << "Determining Matches..." << std::endl;

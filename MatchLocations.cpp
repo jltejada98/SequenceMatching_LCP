@@ -21,8 +21,11 @@ MatchLocations::MatchLocations(int numSequences) {
     LCPIndecies.clear();
 }
 
-void MatchLocations::InsertUniqueSeq_LCPIndex(int seqIndex, size_t lcpIndex) {
+void MatchLocations::InsertUniqueSeq(int seqIndex) {
     uniqueSeqIndices.insert(seqIndex);
+}
+
+void MatchLocations::Insert_LCPIndex(size_t lcpIndex) {
     LCPIndecies.insert(lcpIndex);
 }
 

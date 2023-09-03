@@ -16,7 +16,8 @@ private:
 public:
     explicit MatchLocations(int numSequences);
     explicit MatchLocations();
-    void InsertUniqueSeq_LCPIndex(int seqIndex, size_t lcpIndex);
+    void InsertUniqueSeq(int seqIndex);
+    void Insert_LCPIndex(size_t lcpIndex);
     void MergeUniqueSeq_LCPIndex(const std::shared_ptr<std::unordered_set<int>> &mergeSeqIndecies,
                                  const std::shared_ptr<std::unordered_set<size_t>> &mergeLCPIndecies);
     int NumSeqIncluded();

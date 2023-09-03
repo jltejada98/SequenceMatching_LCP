@@ -120,11 +120,11 @@ Determine_Matches_Parent(std::vector<int> &LCPVector, std::vector<int> &SAVector
     std::cout <<  "Removing invalid matches..." << std::endl;
     //Check if key has items from all sequences.
     std::unordered_set<std::string> validMatches; //Contains valid matches to be used in splitting matches
-    std::vector<int> validLCPIndecies; //Contains indecies to be used in determining locations
+    std::unordered_set<int> validLCPIndeciesSet; //Contains indecies to be used in determining locations
     for(auto & key: keysToCheckValidity){
         if(threadMapVector[0]->at(key).NumSeqIncluded() == numSequences){
             validMatches.insert(key);
-            validLCPIndecies.insert(validLCPIndecies.end(), threadMapVector[0]->at(key).GetLCPIndecies()->begin(),
+            validLCPIndeciesSet.insert(threadMapVector[0]->at(key).GetLCPIndecies()->begin(),
                                     threadMapVector[0]->at(key).GetLCPIndecies()->end());
         }
     }
@@ -132,6 +132,9 @@ Determine_Matches_Parent(std::vector<int> &LCPVector, std::vector<int> &SAVector
     keysToCheckValidity.clear();
     threadMapVector[0]->clear(); //ThreadMapVector Completely Cleared, ready for determining valid locations.
 
+    //Add indecies from set to vector.
+    std::vector<int> validLCPIndecies(validLCPIndeciesSet.begin(),validLCPIndeciesSet.end());
+    validLCPIndeciesSet.clear();
 
     //////////////////////////////////////////////////////////
     //2. Use threads to determine locations of valid matches//
@@ -150,18 +153,21 @@ Determine_Matches_Parent(std::vector<int> &LCPVector, std::vector<int> &SAVector
 //                                 minimumMatchSize, maximumMatchSize, std::ref(seqStringVector), std::ref(seqRangeVector), startIndex, endIndex);
 
     //Single Thread Version
-    Determine_Match_Locations_Child(*threadMapVector[0], LCPVector, SAVector, indexVector, validMatches, validLCPIndecies, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, startIndex, endIndex);
+//    Determine_Match_Locations_Child(*threadMapVector[0], LCPVector, SAVector, indexVector, validMatches, validLCPIndecies, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, startIndex, endIndex);
 
+    //All In One
+    Determine_Match_Locations_Child(*threadMapVector[0], LCPVector, SAVector, indexVector, validMatches, validLCPIndecies, minimumMatchSize, maximumMatchSize, numSequences, seqStringVector, startIndex, validLCPIndecies.size());
 
 
     //Create subsequent threads
-    for (i = 1; i < numSplits; ++i) {
-        startIndex = endIndex;
-        endIndex = startIndex+splitSize;
-        Determine_Match_Locations_Child(*threadMapVector[i], LCPVector, SAVector, indexVector, validMatches,
-                                        validLCPIndecies, minimumMatchSize, maximumMatchSize, numSequences,
-                                        seqStringVector, startIndex, endIndex);//Single Threaded for Testing
-    }
+//    for (i = 1; i < numSplits; ++i) {
+//        startIndex = endIndex;
+//        endIndex = startIndex+splitSize;
+//        //Single Thread Version
+//        Determine_Match_Locations_Child(*threadMapVector[i], LCPVector, SAVector, indexVector, validMatches,
+//                                        validLCPIndecies, minimumMatchSize, maximumMatchSize, numSequences,
+//                                        seqStringVector, startIndex, endIndex);//Single Threaded for Testing
+//    }
 
 
     //Wait for all threads to complete
@@ -211,9 +217,9 @@ void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocati
     size_t actualLCPIndex;
 
     //Iterate across LCP Indecies
-    for(size_t validIndex = startIndex; validIndex < endIndex; ++validIndex) {
+    for(size_t validIndexToCheck = startIndex; validIndexToCheck < endIndex; ++validIndexToCheck) {
         //LCP Index that is being queried
-        actualLCPIndex = validLCPIndecies[validIndex];
+        actualLCPIndex = validLCPIndecies[validIndexToCheck];
 
         //When creating partitions, check if the partition created needs to be created.
         partitions = Determine_LocationPartitions(seqStringVector[indexVector[actualLCPIndex]]->substr(SAVector[actualLCPIndex], LCPVector[actualLCPIndex]),
@@ -241,6 +247,8 @@ void Determine_Match_Locations_Child(std::unordered_map<std::string, MatchLocati
                 }
             }
         }
+        partitions->clear();
+        partitionsShiftList->clear();
     }
 }
 
@@ -267,13 +275,21 @@ Determine_Valid_Matches_Child(std::unordered_map<std::string, MatchLocations> &m
                 //Check all partitions against map
                 for (auto & partition : *partitions) { //Iterate all partitions.
                     if(matchesMap.count(*partition)){ //If partition exists, add match location
-                        matchesMap[*partition].InsertUniqueSeq_LCPIndex(indexVector[index - 1],index-1);
-                        matchesMap[*partition].InsertUniqueSeq_LCPIndex(indexVector[index],index);
+                        //Add both sequence instances (i.e: Where each sequence belongs)
+                        matchesMap[*partition].InsertUniqueSeq(indexVector[index - 1]);
+                        matchesMap[*partition].InsertUniqueSeq(indexVector[index]);
+                        //Add only singular LCP index as all necessary information is given from single index
+                        //I.E: We can extract both locations of a valid match from SA[index] and SA[index-1]
+                        matchesMap[*partition].Insert_LCPIndex(index);
                     }
                     else{ //Create new possible match
                         newMatchValidity = std::make_shared<MatchLocations>();
-                        newMatchValidity->InsertUniqueSeq_LCPIndex(indexVector[index - 1],index-1);
-                        newMatchValidity->InsertUniqueSeq_LCPIndex(indexVector[index],index);
+                        //Add both sequence instances (i.e: Where each sequence belongs)
+                        newMatchValidity->InsertUniqueSeq(indexVector[index - 1]);
+                        newMatchValidity->InsertUniqueSeq(indexVector[index]);
+                        //Add only singular LCP index as all necessary information is given from single index
+                        //I.E: We can extract both locations of a valid match from SA[index] and SA[index-1]
+                        newMatchValidity->Insert_LCPIndex(index);
                         newMatchPair = std::make_pair(*partition, *newMatchValidity);
                         matchesMap.insert(newMatchPair);
                     }
